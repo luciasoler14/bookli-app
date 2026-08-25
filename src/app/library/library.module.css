@@ -18,14 +18,14 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--muted-border);
 }
 
 .tab {
   padding: 0.75rem 1.5rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #666;
+  color: var(--text-light);
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
@@ -35,12 +35,12 @@
 }
 
 .tab:hover {
-  color: #333;
+  color: var(--text);
 }
 
 .tabActive {
-  color: #e63946;
-  border-bottom-color: #e63946;
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
 .filters {
@@ -52,22 +52,22 @@
 .filterBtn {
   padding: 0.4rem 1rem;
   font-size: 0.8rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 20px;
   background: white;
-  color: #666;
+  color: var(--text-light);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .filterBtn:hover {
-  border-color: #999;
+  border-color: var(--muted);
 }
 
 .filterActive {
-  background: #e63946;
+  background: var(--primary);
   color: white;
-  border-color: #e63946;
+  border-color: var(--primary);
 }
 
 .grid {
@@ -83,14 +83,14 @@
 .empty {
   text-align: center;
   padding: 4rem 2rem;
-  color: #666;
+  color: var(--text-light);
 }
 
 .exploreLink {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background: #e63946;
+  background: var(--primary);
   color: white;
   border-radius: 8px;
   font-weight: 600;
@@ -98,5 +98,5 @@
 }
 
 .exploreLink:hover {
-  background: #c1121f;
+  background: var(--primary-hover);
 }

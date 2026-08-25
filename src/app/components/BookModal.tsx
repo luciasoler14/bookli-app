@@ -81,25 +81,25 @@ export default function BookModal({ book, onClose }: BookModalProps) {
             <div className={styles.meta}>
               {book.first_publish_year && (
                 <p className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Publicado: </span>
+                  <span className={styles.metaLabel}>Published: </span>
                   {book.first_publish_year}
                 </p>
               )}
               {details?.number_of_pages_median && (
                 <p className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Páginas: </span>
+                  <span className={styles.metaLabel}>Pages: </span>
                   {details.number_of_pages_median}
                 </p>
               )}
               {book.publisher?.[0] && (
                 <p className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Editorial: </span>
+                  <span className={styles.metaLabel}>Publisher: </span>
                   {book.publisher.slice(0, 3).join(", ")}
                 </p>
               )}
               {book.language?.[0] && (
                 <p className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Idioma: </span>
+                  <span className={styles.metaLabel}>Language: </span>
                   {book.language.slice(0, 3).map(getLanguageName).join(", ")}
                 </p>
               )}
@@ -111,7 +111,7 @@ export default function BookModal({ book, onClose }: BookModalProps) {
               )}
             </div>
             {isLoading ? (
-              <p className={styles.descriptionLoading}>Cargando descripción...</p>
+              <p className={styles.descriptionLoading}>Loading description...</p>
             ) : details?.description ? (
               <p className={styles.description}>{details.description}</p>
             ) : null}

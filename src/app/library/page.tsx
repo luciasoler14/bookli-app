@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import BookCard, { Book } from "../components/BookCard";
 import BookModal from "../components/BookModal";
-import { useFavorites } from "../hooks/useFavorites";
-import { useReadingList, ReadingStatus } from "../hooks/useReadingList";
+import { useFavoriteList } from "../hooks/useFavorites";
+import { useReadingListArray, ReadingStatus } from "../hooks/useReadingList";
 import styles from "./library.module.css";
 
 const STATUS_LABELS: Record<ReadingStatus, string> = {
@@ -18,8 +18,8 @@ export default function LibraryPage() {
   const [activeTab, setActiveTab] = useState<"favorites" | "reading">("favorites");
   const [statusFilter, setStatusFilter] = useState<ReadingStatus | "all">("all");
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const { favoriteList } = useFavorites();
-  const { readingListArray } = useReadingList();
+  const favoriteList = useFavoriteList();
+  const readingListArray = useReadingListArray();
 
   const filteredReading =
     statusFilter === "all"

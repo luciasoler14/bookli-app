@@ -38,7 +38,7 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #999;
+  color: var(--muted);
   cursor: pointer;
   z-index: 1;
   width: 36px;
@@ -51,8 +51,8 @@
 }
 
 .closeButton:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .content {
@@ -80,11 +80,11 @@
 .noCover {
   width: 200px;
   height: 300px;
-  background: #f0f0f0;
+  background: var(--surface);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #999;
+  color: var(--muted);
   border-radius: 8px;
   font-size: 1rem;
 }
@@ -103,7 +103,7 @@
 
 .authors {
   font-size: 1rem;
-  color: #666;
+  color: var(--text-light);
   margin-bottom: 1rem;
 }
 
@@ -116,26 +116,26 @@
 
 .metaItem {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--text-light);
 }
 
 .metaLabel {
   font-weight: 600;
-  color: #333;
+  color: var(--text);
 }
 
 .description {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: #444;
-  border-top: 1px solid #eee;
+  color: var(--text-dark);
+  border-top: 1px solid var(--muted-border);
   padding-top: 1rem;
 }
 
 .descriptionLoading {
   font-size: 0.9rem;
-  color: #999;
-  border-top: 1px solid #eee;
+  color: var(--muted);
+  border-top: 1px solid var(--muted-border);
   padding-top: 1rem;
 }
 
@@ -144,20 +144,20 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--muted-border);
   padding-top: 1rem;
 }
 
 .subjectTag {
-  background: #f5f5f5;
-  color: #555;
+  background: var(--surface-hover);
+  color: var(--text-light);
   font-size: 0.8rem;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
 }
 
 .authorSection {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--muted-border);
   padding-top: 1rem;
   margin-top: 1rem;
 }
@@ -167,26 +167,26 @@
 }
 
 .authorCard + .authorCard {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--surface);
 }
 
 .authorName {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text);
   margin-bottom: 0.25rem;
 }
 
 .authorDates {
   font-size: 0.8rem;
-  color: #999;
+  color: var(--muted);
   margin-bottom: 0.5rem;
 }
 
 .authorBio {
   font-size: 0.85rem;
   line-height: 1.6;
-  color: #555;
+  color: var(--text-light);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -198,7 +198,7 @@
   gap: 0.75rem;
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--muted-border);
 }
 
 .actionBtn {
@@ -208,10 +208,10 @@
   padding: 0 1rem;
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   background: white;
-  color: #333;
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -222,29 +222,29 @@
 }
 
 .actionBtn:hover {
-  border-color: #e63946;
-  color: #e63946;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .actionBtnActive {
-  background: #e63946;
+  background: var(--primary);
   color: white;
-  border-color: #e63946;
+  border-color: var(--primary);
 }
 
 .actionBtnActive:hover {
-  background: #c1121f;
+  background: var(--primary-hover);
   color: white;
 }
 
 .actionBtnReading {
-  background: #e63946;
+  background: var(--primary);
   color: white;
-  border-color: #e63946;
+  border-color: var(--primary);
 }
 
 .actionBtnReading:hover {
-  background: #c1121f;
+  background: var(--primary-hover);
 }
 
 .dropdownWrapper {
@@ -259,7 +259,7 @@
   left: 0;
   right: 0;
   background: white;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -274,17 +274,17 @@
   text-align: left;
   border: none;
   background: white;
-  color: #333;
+  color: var(--text);
   cursor: pointer;
   transition: background 0.15s;
 }
 
 .dropdownItem:hover {
-  background: #f5f5f5;
+  background: var(--surface-hover);
 }
 
 .dropdownItemActive {
-  color: #e63946;
+  color: var(--primary);
   font-weight: 600;
 }
 

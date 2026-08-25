@@ -1,77 +1,69 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { useShallow } from "zustand/shallow";
 import { Book } from "../components/BookCard";
-
-const STORAGE_KEY = "bookli:favorites";
 
 interface FavoriteEntry {
   book: Book;
   addedAt: string;
 }
 
-type FavoritesMap = Record<string, FavoriteEntry>;
-
-function readStorage(): FavoritesMap {
-  if (typeof window === "undefined") return {};
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  } catch {
-    return {};
-  }
+interface FavoritesState {
+  favorites: Record<string, FavoriteEntry>;
+  addFavorite: (book: Book) => void;
+  removeFavorite: (bookKey: string) => void;
+  toggleFavorite: (book: Book) => void;
+  isFavorite: (bookKey: string) => boolean;
 }
 
-function writeStorage(data: FavoritesMap) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
+export const useFavorites = create<FavoritesState>()(
+  persist(
+    (set, get) => ({
+      favorites: {},
+      addFavorite: (book) =>
+        set((state) => ({
+          favorites: {
+            ...state.favorites,
+            [book.key]: { book, addedAt: new Date().toISOString() },
+          },
+        })),
+      removeFavorite: (bookKey) =>
+        set((state) => {
+          const next = { ...state.favorites };
+          delete next[bookKey];
+          return { favorites: next };
+        }),
+      toggleFavorite: (book) =>
+        set((state) => {
+          const next = { ...state.favorites };
+          if (next[book.key]) {
+            delete next[book.key];
+          } else {
+            next[book.key] = { book, addedAt: new Date().toISOString() };
+          }
+          return { favorites: next };
+        }),
+      isFavorite: (bookKey) => !!get().favorites[bookKey],
+    }),
+    {
+      name: "bookli:favorites",
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          return str ? JSON.parse(str) : null;
+        },
+        setItem: (name, value) => localStorage.setItem(name, JSON.stringify(value)),
+        removeItem: (name) => localStorage.removeItem(name),
+      },
+    }
+  )
+);
 
-export function useFavorites() {
-  const [favorites, setFavorites] = useState<FavoritesMap>({});
-
-  useEffect(() => {
-    setFavorites(readStorage());
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) setFavorites(readStorage());
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
-  const addFavorite = useCallback((book: Book) => {
-    setFavorites((prev) => {
-      const next = { ...prev, [book.key]: { book, addedAt: new Date().toISOString() } };
-      writeStorage(next);
-      return next;
-    });
-  }, []);
-
-  const removeFavorite = useCallback((bookKey: string) => {
-    setFavorites((prev) => {
-      const next = { ...prev };
-      delete next[bookKey];
-      writeStorage(next);
-      return next;
-    });
-  }, []);
-
-  const toggleFavorite = useCallback((book: Book) => {
-    setFavorites((prev) => {
-      const next = { ...prev };
-      if (next[book.key]) {
-        delete next[book.key];
-      } else {
-        next[book.key] = { book, addedAt: new Date().toISOString() };
-      }
-      writeStorage(next);
-      return next;
-    });
-  }, []);
-
-  const isFavorite = useCallback((bookKey: string) => !!favorites[bookKey], [favorites]);
-
-  const favoriteList = Object.values(favorites).sort(
+export const useFavoriteList = () => {
+  const favorites = useFavorites((state) => state.favorites);
+  return Object.values(favorites).sort(
     (a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime()
   );
-
-  return { favorites, favoriteList, addFavorite, removeFavorite, toggleFavorite, isFavorite };
-}
+};
