@@ -1,10 +1,14 @@
 "use client";
 
-import BookCard from "./BookCard";
+import BookCard, { Book } from "./BookCard";
 import { useTrending } from "../hooks/useTrending";
 import styles from "./TrendingBooks.module.css";
 
-export default function TrendingBooks() {
+interface TrendingBooksProps {
+  onBookClick?: (book: Book) => void;
+}
+
+export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
   const { data: books, isLoading, error } = useTrending("fiction", 6);
 
   if (isLoading) {
@@ -26,7 +30,7 @@ export default function TrendingBooks() {
       <div className={styles.scrollContainer}>
         {books.map((book) => (
           <div key={book.key} className={styles.cardWrapper}>
-            <BookCard book={book} />
+            <BookCard book={book} onClick={onBookClick} />
           </div>
         ))}
       </div>

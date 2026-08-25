@@ -14,15 +14,21 @@ export interface Book {
 
 interface BookCardProps {
   book: Book;
+  onClick?: (book: Book) => void;
 }
 
 const getCoverUrl = (coverId: number) => {
   return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
 };
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, onClick }: BookCardProps) {
   return (
-    <div className={styles.card}>
+    <div
+      className={styles.card}
+      onClick={() => onClick?.(book)}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+    >
       {book.cover_i ? (
         <Image
           src={getCoverUrl(book.cover_i)}

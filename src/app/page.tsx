@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import BookCard from "./components/BookCard";
+import BookCard, { Book } from "./components/BookCard";
+import BookModal from "./components/BookModal";
 import ExploreByGenre from "./components/ExploreByGenre";
 import Pagination from "./components/Pagination";
 import TrendingBooks from "./components/TrendingBooks";
@@ -14,6 +15,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
   const { data, isLoading, error } = useBooks(
     searchQuery,
@@ -115,7 +117,7 @@ export default function Home() {
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
-                <BookCard key={book.key} book={book} />
+                <BookCard key={book.key} book={book} onClick={setSelectedBook} />
               ))}
             </div>
             <Pagination
@@ -135,8 +137,11 @@ export default function Home() {
           </div>
         )}
 
-        {!searchQuery && <TrendingBooks />}
+        {!searchQuery && <TrendingBooks onBookClick={setSelectedBook} />}
       </main>
+      {selectedBook && (
+        <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
+      )}
     </div>
   );
 }
