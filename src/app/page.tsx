@@ -10,7 +10,10 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data, isLoading, error } = useBooks(searchQuery, searchQuery.length > 0);
+  const { data, isLoading, error } = useBooks(
+    searchQuery,
+    searchQuery.length > 0,
+  );
 
   const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,8 +38,6 @@ export default function Home() {
           </section>
         )}
 
-        {!searchQuery && <TrendingBooks />}
-
         <form onSubmit={searchBooks} className={styles.searchForm}>
           <input
             type="text"
@@ -45,7 +46,11 @@ export default function Home() {
             placeholder="Search for books, authors, or ISBN..."
             className={styles.searchInput}
           />
-          <button type="submit" className={styles.searchButton} disabled={isLoading}>
+          <button
+            type="submit"
+            className={styles.searchButton}
+            disabled={isLoading}
+          >
             {isLoading ? "Searching..." : "Search"}
           </button>
         </form>
@@ -78,9 +83,14 @@ export default function Home() {
 
         {!isLoading && searchQuery && !error && books.length === 0 && (
           <div className={styles.noResults}>
-            <p>No books found for &quot;{searchQuery}&quot;. Try a different search term.</p>
+            <p>
+              No books found for &quot;{searchQuery}&quot;. Try a different
+              search term.
+            </p>
           </div>
         )}
+
+        {!searchQuery && <TrendingBooks />}
       </main>
     </div>
   );
