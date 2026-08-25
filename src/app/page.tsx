@@ -1,19 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import BookCard, { Book } from "./components/BookCard";
 import styles from "./page.module.css";
-
-interface Book {
-  key: string;
-  title: string;
-  author_name?: string[];
-  first_publish_year?: number;
-  cover_i?: number;
-  publisher?: string[];
-  language?: string[];
-  isbn?: string[];
-}
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -40,10 +29,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getCoverUrl = (coverId: number) => {
-    return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
   };
 
   return (
@@ -88,31 +73,7 @@ export default function Home() {
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
-                <div key={book.key} className={styles.bookCard}>
-                  {book.cover_i ? (
-                    <Image
-                      src={getCoverUrl(book.cover_i)}
-                      alt={book.title}
-                      className={styles.bookCover}
-                      width={200}
-                      height={280}
-                      unoptimized
-                    />
-                  ) : (
-                    <div className={styles.noCover}>No Cover</div>
-                  )}
-                  <div className={styles.bookInfo}>
-                    <h3 className={styles.bookTitle}>{book.title}</h3>
-                    <p className={styles.bookAuthor}>
-                      {book.author_name?.[0] || "Unknown Author"}
-                    </p>
-                    {book.first_publish_year && (
-                      <p className={styles.bookYear}>
-                        Published: {book.first_publish_year}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <BookCard key={book.key} book={book} />
               ))}
             </div>
           </section>
