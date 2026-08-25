@@ -3,36 +3,51 @@
 import { useState } from "react";
 import BookCard from "./components/BookCard";
 import ExploreByGenre from "./components/ExploreByGenre";
+import Pagination from "./components/Pagination";
 import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
 import styles from "./page.module.css";
 
+const BOOKS_PER_PAGE = 20;
+
 export default function Home() {
   const [query, setQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
 
   const { data, isLoading, error } = useBooks(
     searchQuery,
+    page,
     searchQuery.length > 0,
   );
 
   const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
+    setPage(1);
     setSearchQuery(query);
   };
 
   const handleGenreSelect = (genre: string) => {
     setQuery(genre);
     setSearchQuery(genre);
+    setPage(1);
   };
 
   const handleClear = () => {
     setQuery("");
     setSearchQuery("");
+    setPage(1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const books = data?.docs || [];
+  const numFound = data?.numFound || 0;
+  const totalPages = Math.min(Math.ceil(numFound / BOOKS_PER_PAGE), 100);
 
   return (
     <div className={styles.page}>
@@ -95,13 +110,19 @@ export default function Home() {
         {!isLoading && books.length > 0 && (
           <section className={styles.results}>
             <h2 className={styles.resultsTitle}>
-              Found {books.length} books for &quot;{searchQuery}&quot;
+              Found {numFound.toLocaleString()} books for &quot;{searchQuery}
+              &quot; — Page {page} of {totalPages}
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
                 <BookCard key={book.key} book={book} />
               ))}
             </div>
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </section>
         )}
 
