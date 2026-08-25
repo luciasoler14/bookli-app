@@ -1,68 +1,128 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 
+interface Book {
+  key: string;
+  title: string;
+  author_name?: string[];
+  first_publish_year?: number;
+  cover_i?: number;
+  publisher?: string[];
+  language?: string[];
+  isbn?: string[];
+}
+
 export default function Home() {
+  const [query, setQuery] = useState("");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+
+  const searchBooks = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+
+    setLoading(true);
+    setSearched(true);
+
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`
+      );
+      const data = await res.json();
+      setBooks(data.docs || []);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      setBooks([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getCoverUrl = (coverId: number) => {
+    return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+  };
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        {!searched && (
+          <section className={styles.hero}>
+            <h1 className={styles.title}>
+              DISCOVER YOUR NEXT <br />
+              <span className={styles.highlight}>GREAT READ</span>
+            </h1>
+            <p className={styles.subtitle}>
+              Find your next book, save your favorites, and build your library.
+            </p>
+          </section>
+        )}
+
+        <form onSubmit={searchBooks} className={styles.searchForm}>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for books, authors, or ISBN..."
+            className={styles.searchInput}
+          />
+          <button type="submit" className={styles.searchButton} disabled={loading}>
+            {loading ? "Searching..." : "Search"}
+          </button>
+        </form>
+
+        {loading && (
+          <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p>Searching for books...</p>
+          </div>
+        )}
+
+        {!loading && books.length > 0 && (
+          <section className={styles.results}>
+            <h2 className={styles.resultsTitle}>
+              Found {books.length} books for &quot;{query}&quot;
+            </h2>
+            <div className={styles.bookGrid}>
+              {books.map((book) => (
+                <div key={book.key} className={styles.bookCard}>
+                  {book.cover_i ? (
+                    <Image
+                      src={getCoverUrl(book.cover_i)}
+                      alt={book.title}
+                      className={styles.bookCover}
+                      width={200}
+                      height={280}
+                      unoptimized
+                    />
+                  ) : (
+                    <div className={styles.noCover}>No Cover</div>
+                  )}
+                  <div className={styles.bookInfo}>
+                    <h3 className={styles.bookTitle}>{book.title}</h3>
+                    <p className={styles.bookAuthor}>
+                      {book.author_name?.[0] || "Unknown Author"}
+                    </p>
+                    {book.first_publish_year && (
+                      <p className={styles.bookYear}>
+                        Published: {book.first_publish_year}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {!loading && searched && books.length === 0 && (
+          <div className={styles.noResults}>
+            <p>No books found for &quot;{query}&quot;. Try a different search term.</p>
+          </div>
+        )}
       </main>
     </div>
   );
