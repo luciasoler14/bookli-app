@@ -2,8 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  background: #d13653;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .inner {
@@ -19,7 +19,7 @@
 .logo {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #e63946;
+  color: white;
   letter-spacing: -0.02em;
 }
 
@@ -31,14 +31,14 @@
 .link {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   transition: color 0.2s;
 }
 
 .link:hover {
-  color: #333;
+  color: white;
 }
 
 .active {
-  color: #e63946;
+  color: white;
 }

@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import BookCard, { Book } from "../components/BookCard";
+import BookModal from "../components/BookModal";
 import { useFavorites } from "../hooks/useFavorites";
 import { useReadingList, ReadingStatus } from "../hooks/useReadingList";
-import { getCoverUrl } from "../utils/getCoverUrl";
 import styles from "./library.module.css";
 
 const STATUS_LABELS: Record<ReadingStatus, string> = {
@@ -17,8 +17,9 @@ const STATUS_LABELS: Record<ReadingStatus, string> = {
 export default function LibraryPage() {
   const [activeTab, setActiveTab] = useState<"favorites" | "reading">("favorites");
   const [statusFilter, setStatusFilter] = useState<ReadingStatus | "all">("all");
-  const { favoriteList, removeFavorite } = useFavorites();
-  const { readingListArray, removeFromReadingList, updateStatus } = useReadingList();
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const { favoriteList } = useFavorites();
+  const { readingListArray } = useReadingList();
 
   const filteredReading =
     statusFilter === "all"
@@ -57,32 +58,8 @@ export default function LibraryPage() {
             ) : (
               <div className={styles.grid}>
                 {favoriteList.map(({ book }) => (
-                  <div key={book.key} className={styles.card}>
-                    {book.cover_i ? (
-                      <div className={styles.coverWrapper}>
-                        <Image
-                          src={getCoverUrl(book.cover_i, "M")}
-                          alt={book.title}
-                          fill
-                          unoptimized
-                          className={styles.cover}
-                        />
-                      </div>
-                    ) : (
-                      <div className={styles.noCover}>No Cover</div>
-                    )}
-                    <div className={styles.cardInfo}>
-                      <h3 className={styles.cardTitle}>{book.title}</h3>
-                      <p className={styles.cardAuthor}>
-                        {book.author_name?.[0] || "Unknown Author"}
-                      </p>
-                    </div>
-                    <button
-                      className={styles.removeBtn}
-                      onClick={() => removeFavorite(book.key)}
-                    >
-                      ✕
-                    </button>
+                  <div key={book.key} className={styles.cardWrapper}>
+                    <BookCard book={book} onClick={setSelectedBook} />
                   </div>
                 ))}
               </div>
@@ -112,44 +89,9 @@ export default function LibraryPage() {
               </div>
             ) : (
               <div className={styles.grid}>
-                {filteredReading.map(({ book, status }) => (
-                  <div key={book.key} className={styles.card}>
-                    {book.cover_i ? (
-                      <div className={styles.coverWrapper}>
-                        <Image
-                          src={getCoverUrl(book.cover_i, "M")}
-                          alt={book.title}
-                          fill
-                          unoptimized
-                          className={styles.cover}
-                        />
-                      </div>
-                    ) : (
-                      <div className={styles.noCover}>No Cover</div>
-                    )}
-                    <div className={styles.cardInfo}>
-                      <h3 className={styles.cardTitle}>{book.title}</h3>
-                      <p className={styles.cardAuthor}>
-                        {book.author_name?.[0] || "Unknown Author"}
-                      </p>
-                      <select
-                        className={styles.statusSelect}
-                        value={status}
-                        onChange={(e) =>
-                          updateStatus(book.key, e.target.value as ReadingStatus)
-                        }
-                      >
-                        <option value="want">Want to Read</option>
-                        <option value="reading">Reading</option>
-                        <option value="read">Read</option>
-                      </select>
-                    </div>
-                    <button
-                      className={styles.removeBtn}
-                      onClick={() => removeFromReadingList(book.key)}
-                    >
-                      ✕
-                    </button>
+                {filteredReading.map(({ book }) => (
+                  <div key={book.key} className={styles.cardWrapper}>
+                    <BookCard book={book} onClick={setSelectedBook} />
                   </div>
                 ))}
               </div>
@@ -157,6 +99,9 @@ export default function LibraryPage() {
           </section>
         )}
       </main>
+      {selectedBook && (
+        <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
+      )}
     </div>
   );
 }
