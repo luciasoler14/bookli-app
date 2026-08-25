@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import BookCard from "./components/BookCard";
+import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
 import styles from "./page.module.css";
 
@@ -33,6 +34,8 @@ export default function Home() {
             </p>
           </section>
         )}
+
+        {!searchQuery && <TrendingBooks />}
 
         <form onSubmit={searchBooks} className={styles.searchForm}>
           <input
