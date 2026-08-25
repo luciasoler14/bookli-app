@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import BookCard from "./components/BookCard";
+import ExploreByGenre from "./components/ExploreByGenre";
 import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
 import styles from "./page.module.css";
@@ -19,6 +20,11 @@ export default function Home() {
     e.preventDefault();
     if (!query.trim()) return;
     setSearchQuery(query);
+  };
+
+  const handleGenreSelect = (genre: string) => {
+    setQuery(genre);
+    setSearchQuery(genre);
   };
 
   const books = data?.docs || [];
@@ -54,6 +60,8 @@ export default function Home() {
             {isLoading ? "Searching..." : "Search"}
           </button>
         </form>
+
+        {!searchQuery && <ExploreByGenre onSelect={handleGenreSelect} />}
 
         {isLoading && (
           <div className={styles.loading}>
