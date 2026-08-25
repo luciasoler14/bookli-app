@@ -27,14 +27,15 @@ export default function BookCard({ book, onClick }: BookCardProps) {
       tabIndex={onClick ? 0 : undefined}
     >
       {book.cover_i ? (
-        <Image
-          src={getCoverUrl(book.cover_i, "M")}
-          alt={book.title}
-          className={styles.cover}
-          width={200}
-          height={280}
-          unoptimized
-        />
+        <div className={styles.coverWrapper}>
+          <Image
+            src={getCoverUrl(book.cover_i, "M")}
+            alt={book.title}
+            className={styles.cover}
+            fill
+            unoptimized
+          />
+        </div>
       ) : (
         <div className={styles.noCover}>No Cover</div>
       )}

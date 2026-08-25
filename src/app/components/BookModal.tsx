@@ -37,14 +37,15 @@ export default function BookModal({ book, onClose }: BookModalProps) {
         <div className={styles.content}>
           <div className={styles.coverSection}>
             {book.cover_i ? (
-              <Image
-                src={getCoverUrl(book.cover_i, "L")}
-                alt={book.title}
-                className={styles.cover}
-                width={200}
-                height={300}
-                unoptimized
-              />
+              <div className={styles.coverWrapper}>
+                <Image
+                  src={getCoverUrl(book.cover_i, "L")}
+                  alt={book.title}
+                  className={styles.cover}
+                  fill
+                  unoptimized
+                />
+              </div>
             ) : (
               <div className={styles.noCover}>No Cover</div>
             )}
