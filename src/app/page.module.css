@@ -45,9 +45,15 @@
   margin-bottom: 3rem;
 }
 
-.searchInput {
+.inputWrapper {
   flex: 1;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
   padding: 1rem 1.5rem;
+  padding-right: 2.5rem;
   font-size: 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -57,6 +63,24 @@
 
 .searchInput:focus {
   border-color: #e63946;
+}
+
+.clearButton {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.clearButton:hover {
+  color: #333;
 }
 
 .searchButton {

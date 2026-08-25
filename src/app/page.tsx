@@ -27,6 +27,11 @@ export default function Home() {
     setSearchQuery(genre);
   };
 
+  const handleClear = () => {
+    setQuery("");
+    setSearchQuery("");
+  };
+
   const books = data?.docs || [];
 
   return (
@@ -45,13 +50,24 @@ export default function Home() {
         )}
 
         <form onSubmit={searchBooks} className={styles.searchForm}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for books, authors, or ISBN..."
-            className={styles.searchInput}
-          />
+          <div className={styles.inputWrapper}>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search for books, authors, or ISBN..."
+              className={styles.searchInput}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                className={styles.clearButton}
+                onClick={handleClear}
+              >
+                ✕
+              </button>
+            )}
+          </div>
           <button
             type="submit"
             className={styles.searchButton}
