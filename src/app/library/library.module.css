@@ -1,0 +1,181 @@
+.page {
+  min-height: 100vh;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #eee;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab:hover {
+  color: #333;
+}
+
+.tabActive {
+  color: #e63946;
+  border-bottom-color: #e63946;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filterBtn {
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  border-color: #999;
+}
+
+.filterActive {
+  background: #e63946;
+  color: white;
+  border-color: #e63946;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+
+.cover {
+  object-fit: cover;
+}
+
+.noCover {
+  width: 100%;
+  height: 280px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.cardInfo {
+  padding: 1rem;
+}
+
+.cardTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardAuthor {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.statusSelect {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card:hover .removeBtn {
+  opacity: 1;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.exploreLink {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #e63946;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.exploreLink:hover {
+  background: #c1121f;
+}

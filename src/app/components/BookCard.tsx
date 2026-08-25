@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { getCoverUrl } from "../utils/getCoverUrl";
+import { useFavorites } from "../hooks/useFavorites";
 import styles from "./BookCard.module.css";
 
 export interface Book {
@@ -19,6 +22,8 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, onClick }: BookCardProps) {
+  const { isFavorite } = useFavorites();
+
   return (
     <div
       className={styles.card}
@@ -35,6 +40,9 @@ export default function BookCard({ book, onClick }: BookCardProps) {
             fill
             unoptimized
           />
+          {isFavorite(book.key) && (
+            <span className={styles.heart}>♥</span>
+          )}
         </div>
       ) : (
         <div className={styles.noCover}>No Cover</div>

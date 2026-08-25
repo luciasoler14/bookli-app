@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Book } from "./BookCard";
 import { getCoverUrl } from "../utils/getCoverUrl";
 import { getLanguageName } from "../utils/languages";
 import { useBookDetails } from "../hooks/useBookDetails";
+import { useFavorites } from "../hooks/useFavorites";
+import { useReadingList, ReadingStatus } from "../hooks/useReadingList";
 import styles from "./BookModal.module.css";
+
+const STATUS_LABELS: Record<ReadingStatus, string> = {
+  want: "Want to Read",
+  reading: "Reading",
+  read: "Read",
+};
 
 interface BookModalProps {
   book: Book;
@@ -15,6 +23,21 @@ interface BookModalProps {
 
 export default function BookModal({ book, onClose }: BookModalProps) {
   const { data: details, isLoading } = useBookDetails(book.key);
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { getStatus, addToReadingList, removeFromReadingList, updateStatus, isInReadingList } = useReadingList();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showDropdown]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -118,6 +141,54 @@ export default function BookModal({ book, onClose }: BookModalProps) {
                 ))}
               </div>
             )}
+            <div className={styles.actions}>
+              <button
+                className={`${styles.actionBtn} ${isFavorite(book.key) ? styles.actionBtnActive : ""}`}
+                onClick={() => toggleFavorite(book)}
+              >
+                <span>{isFavorite(book.key) ? "♥" : "♡"}</span>
+                <span>{isFavorite(book.key) ? "Favorited" : "Add to Favorites"}</span>
+              </button>
+              <div className={styles.dropdownWrapper} ref={dropdownRef}>
+                <button
+                  className={`${styles.actionBtn} ${isInReadingList(book.key) ? styles.actionBtnReading : ""}`}
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  {isInReadingList(book.key) ? STATUS_LABELS[getStatus(book.key)!] : "+ Reading List"}
+                </button>
+                {showDropdown && (
+                  <div className={styles.dropdown}>
+                    {(["want", "reading", "read"] as const).map((s) => (
+                      <button
+                        key={s}
+                        className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
+                        onClick={() => {
+                          if (isInReadingList(book.key)) {
+                            updateStatus(book.key, s);
+                          } else {
+                            addToReadingList(book, s);
+                          }
+                          setShowDropdown(false);
+                        }}
+                      >
+                        {STATUS_LABELS[s]}
+                      </button>
+                    ))}
+                    {isInReadingList(book.key) && (
+                      <button
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          removeFromReadingList(book.key);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
