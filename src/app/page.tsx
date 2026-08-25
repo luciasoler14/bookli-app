@@ -1,40 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import BookCard, { Book } from "./components/BookCard";
+import BookCard from "./components/BookCard";
+import { useBooks } from "./hooks/useBooks";
 import styles from "./page.module.css";
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const searchBooks = async (e: React.FormEvent) => {
+  const { data, isLoading, error } = useBooks(searchQuery, searchQuery.length > 0);
+
+  const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-
-    setLoading(true);
-    setSearched(true);
-
-    try {
-      const res = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`
-      );
-      const data = await res.json();
-      setBooks(data.docs || []);
-    } catch (error) {
-      console.error("Error fetching books:", error);
-      setBooks([]);
-    } finally {
-      setLoading(false);
-    }
+    setSearchQuery(query);
   };
+
+  const books = data?.docs || [];
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        {!searched && (
+        {!searchQuery && (
           <section className={styles.hero}>
             <h1 className={styles.title}>
               DISCOVER YOUR NEXT <br />
@@ -54,22 +42,28 @@ export default function Home() {
             placeholder="Search for books, authors, or ISBN..."
             className={styles.searchInput}
           />
-          <button type="submit" className={styles.searchButton} disabled={loading}>
-            {loading ? "Searching..." : "Search"}
+          <button type="submit" className={styles.searchButton} disabled={isLoading}>
+            {isLoading ? "Searching..." : "Search"}
           </button>
         </form>
 
-        {loading && (
+        {isLoading && (
           <div className={styles.loading}>
             <div className={styles.spinner}></div>
             <p>Searching for books...</p>
           </div>
         )}
 
-        {!loading && books.length > 0 && (
+        {error && (
+          <div className={styles.noResults}>
+            <p>Error searching for books. Please try again.</p>
+          </div>
+        )}
+
+        {!isLoading && books.length > 0 && (
           <section className={styles.results}>
             <h2 className={styles.resultsTitle}>
-              Found {books.length} books for &quot;{query}&quot;
+              Found {books.length} books for &quot;{searchQuery}&quot;
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
@@ -79,9 +73,9 @@ export default function Home() {
           </section>
         )}
 
-        {!loading && searched && books.length === 0 && (
+        {!isLoading && searchQuery && !error && books.length === 0 && (
           <div className={styles.noResults}>
-            <p>No books found for &quot;{query}&quot;. Try a different search term.</p>
+            <p>No books found for &quot;{searchQuery}&quot;. Try a different search term.</p>
           </div>
         )}
       </main>
