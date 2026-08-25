@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { Book } from "./BookCard";
 import { getCoverUrl } from "../utils/getCoverUrl";
+import { getLanguageName } from "../utils/languages";
 import { useBookDetails } from "../hooks/useBookDetails";
 import styles from "./BookModal.module.css";
 
@@ -75,7 +76,7 @@ export default function BookModal({ book, onClose }: BookModalProps) {
               {book.language?.[0] && (
                 <p className={styles.metaItem}>
                   <span className={styles.metaLabel}>Idioma: </span>
-                  {book.language.slice(0, 3).join(", ")}
+                  {book.language.slice(0, 3).map(getLanguageName).join(", ")}
                 </p>
               )}
               {book.isbn?.[0] && (
