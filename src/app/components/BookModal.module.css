@@ -149,6 +149,43 @@
   border-radius: 20px;
 }
 
+.authorSection {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.authorCard {
+  padding: 0.75rem 0;
+}
+
+.authorCard + .authorCard {
+  border-top: 1px solid #f0f0f0;
+}
+
+.authorName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.authorDates {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+
+.authorBio {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #555;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @media (max-width: 600px) {
   .content {
     flex-direction: column;

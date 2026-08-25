@@ -91,6 +91,23 @@ export default function BookModal({ book, onClose }: BookModalProps) {
             ) : details?.description ? (
               <p className={styles.description}>{details.description}</p>
             ) : null}
+            {details?.authors && details.authors.length > 0 && (
+              <div className={styles.authorSection}>
+                {details.authors.map((author, i) => (
+                  <div key={i} className={styles.authorCard}>
+                    <h4 className={styles.authorName}>{author.name}</h4>
+                    {(author.birth_date || author.death_date) && (
+                      <p className={styles.authorDates}>
+                        {author.birth_date || "?"} — {author.death_date || "?"}
+                      </p>
+                    )}
+                    {author.bio && (
+                      <p className={styles.authorBio}>{author.bio}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
             {details?.subjects && details.subjects.length > 0 && (
               <div className={styles.subjects}>
                 {details.subjects.slice(0, 8).map((subject) => (
