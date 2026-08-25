@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getCoverUrl } from "../utils/getCoverUrl";
 import styles from "./BookCard.module.css";
 
 export interface Book {
@@ -17,10 +18,6 @@ interface BookCardProps {
   onClick?: (book: Book) => void;
 }
 
-const getCoverUrl = (coverId: number) => {
-  return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
-};
-
 export default function BookCard({ book, onClick }: BookCardProps) {
   return (
     <div
@@ -31,7 +28,7 @@ export default function BookCard({ book, onClick }: BookCardProps) {
     >
       {book.cover_i ? (
         <Image
-          src={getCoverUrl(book.cover_i)}
+          src={getCoverUrl(book.cover_i, "M")}
           alt={book.title}
           className={styles.cover}
           width={200}

@@ -3,12 +3,9 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { Book } from "./BookCard";
+import { getCoverUrl } from "../utils/getCoverUrl";
 import { useBookDetails } from "../hooks/useBookDetails";
 import styles from "./BookModal.module.css";
-
-const getCoverUrl = (coverId: number) => {
-  return `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`;
-};
 
 interface BookModalProps {
   book: Book;
@@ -40,7 +37,7 @@ export default function BookModal({ book, onClose }: BookModalProps) {
           <div className={styles.coverSection}>
             {book.cover_i ? (
               <Image
-                src={getCoverUrl(book.cover_i)}
+                src={getCoverUrl(book.cover_i, "L")}
                 alt={book.title}
                 className={styles.cover}
                 width={200}
