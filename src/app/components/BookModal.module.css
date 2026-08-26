@@ -154,6 +154,13 @@
   font-size: 0.8rem;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.subjectTag:hover {
+  background: var(--primary);
+  color: white;
 }
 
 .actions {

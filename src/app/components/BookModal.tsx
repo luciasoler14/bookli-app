@@ -8,7 +8,7 @@ import { getCoverUrl } from "../utils/getCoverUrl";
 import { getLanguageName } from "../utils/languages";
 import { useBookDetails } from "../hooks/useBookDetails";
 import { useFavorites } from "../hooks/useFavorites";
-import { useReadingList, ReadingStatus } from "../hooks/useReadingList";
+import { useReadingList } from "../hooks/useReadingList";
 import { STATUS_LABELS } from "../utils/constants";
 import styles from "./BookModal.module.css";
 
@@ -108,9 +108,14 @@ export default function BookModal({ book, onClose }: BookModalProps) {
             {details?.subjects && details.subjects.length > 0 && (
               <div className={styles.subjects}>
                 {details.subjects.slice(0, 8).map((subject) => (
-                  <span key={subject} className={styles.subjectTag}>
+                  <Link
+                    key={subject}
+                    href={`/?subject=${encodeURIComponent(subject)}`}
+                    className={styles.subjectTag}
+                    onClick={onClose}
+                  >
                     {subject}
-                  </span>
+                  </Link>
                 ))}
               </div>
             )}

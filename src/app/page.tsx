@@ -19,14 +19,14 @@ function HomeContent() {
   const router = useRouter();
 
   const urlQuery = searchParams.get("q") || "";
+  const urlSubject = searchParams.get("subject") || null;
   const urlPage = parseInt(searchParams.get("page") || "1", 10);
 
   const [query, setQuery] = useState(urlQuery);
-  const [subject, setSubject] = useState<string | null>(null);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 
-  const isSubjectSearch = !!subject && !urlQuery;
+  const isSubjectSearch = !!urlSubject && !urlQuery;
 
   const { data: searchData, isLoading: searchLoading, error: searchError } = useBooks(
     urlQuery,
@@ -35,7 +35,7 @@ function HomeContent() {
   );
 
   const { data: subjectData, isLoading: subjectLoading } = useSubjectBooks(
-    isSubjectSearch ? subject : null,
+    isSubjectSearch ? urlSubject : null,
     urlPage,
   );
 
@@ -47,12 +47,13 @@ function HomeContent() {
   const totalPages = Math.min(Math.ceil(numFound / BOOKS_PER_PAGE), 100);
 
   const displayTitle = isSubjectSearch
-    ? subject!.charAt(0).toUpperCase() + subject!.slice(1)
+    ? urlSubject!.charAt(0).toUpperCase() + urlSubject!.slice(1)
     : urlQuery;
 
-  const updateURL = (q: string, page: number) => {
+  const updateURL = (q: string, page: number, subject?: string) => {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
+    if (subject) params.set("subject", subject);
     if (page > 1) params.set("page", page.toString());
     const qs = params.toString();
     router.push(qs ? `/?${qs}` : "/", { scroll: false });
@@ -61,37 +62,29 @@ function HomeContent() {
   const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    setSubject(null);
     updateURL(query, 1);
     addSearch(query);
   };
 
   const handleGenreSelect = (genre: string) => {
     setQuery("");
-    setSubject(genre.toLowerCase());
-    const params = new URLSearchParams();
-    router.push("/", { scroll: false });
+    updateURL("", 1, genre.toLowerCase());
   };
 
   const handleClear = () => {
     setQuery("");
-    setSubject(null);
     router.push("/");
   };
 
   const handleHistoryClick = (term: string) => {
     setQuery(term);
-    setSubject(null);
     updateURL(term, 1);
     addSearch(term);
   };
 
   const handlePageChange = (newPage: number) => {
     if (isSubjectSearch) {
-      const params = new URLSearchParams();
-      params.set("q", `subject:${subject}`);
-      if (newPage > 1) params.set("page", newPage.toString());
-      router.push(`/?${params.toString()}`, { scroll: false });
+      updateURL("", newPage, urlSubject!);
     } else {
       updateURL(urlQuery, newPage);
     }

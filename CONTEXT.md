@@ -12,7 +12,7 @@
 - **API:** Open Library (search, works, authors, subjects, covers)
 
 ## Routes
-- `/` — Home (search, trending, genre explorer) — `?q=python&page=2`
+- `/` — Home (search, trending, genre explorer) — `?q=python&page=2` or `?subject=fantasy`
 - `/book/[key]` — Book detail page (full details, shareable URL)
 - `/library` — My Library (favorites + reading list) — `?tab=reading`
 
