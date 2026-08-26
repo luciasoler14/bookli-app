@@ -17,6 +17,7 @@ Mejoras pendientes, ordenadas por prioridad.
 - [x] **Loading skeletons** — Skeletons para trending, resultados de búsqueda y modal. Mantienen layout estable.
 - [x] **Touch/swipe en trending carousel** — Soporte swipe en mobile con callback ref (sin loop infinito).
 - [x] **Geist font activada** — `body` usa `--font-geist-sans`, eliminado `Geist_Mono` que no se usaba.
+- [x] **Trending semanal** — Cambiado de trending por subject a `/trending/weekly.json` (trends de la semana, sin género). Título: "Trending This Week".
 - [ ] **Mobile hamburger menu** — Menú responsive en el header.
 - [ ] **Reading progress tracking** — Status "Reading" con input de página actual (X de Y).
 - [x] **Search history** — Guardar últimas 5 búsquedas para reutilizar.

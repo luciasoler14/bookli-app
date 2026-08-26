@@ -36,12 +36,13 @@ src/app/
 │   ├── BookModal.tsx       — Detail modal (description, authors, subjects)
 │   ├── ExploreByGenre.tsx  — Genre chip selector (9 genres)
 │   ├── Pagination.tsx      — Page navigation with ellipsis
-│   └── TrendingBooks.tsx   — Horizontal carousel with arrow navigation
+│   ├── TrendingBooks.tsx   — Horizontal carousel with arrow navigation + swipe
+│   └── Skeleton.tsx        — Reusable skeleton loaders (BookCard, Trending, Search, Modal)
 │
 ├── hooks/
 │   ├── useBooks.ts         — Search query (React Query)
 │   ├── useBookDetails.ts   — Book + author details (React Query)
-│   ├── useTrending.ts      — Trending by subject (React Query)
+│   ├── useTrending.ts      — Weekly trending via /trending/weekly.json (React Query)
 │   ├── useSubjectBooks.ts  — Books by subject with pagination (React Query)
 │   ├── useFavorites.ts     — Zustand store (persisted to localStorage)
 │   ├── useReadingList.ts   — Zustand store (persisted to localStorage)
@@ -95,7 +96,7 @@ type ReadingStatus = "want" | "reading" | "read";
 
 ## Current State
 - ✅ Book search with pagination
-- ✅ Trending books carousel (horizontal scroll with arrows)
+- ✅ Trending books carousel (weekly trending, horizontal scroll with arrows + swipe)
 - ✅ Genre explorer chips
 - ✅ Book detail modal (description, authors, subjects, languages, ISBN) — all English labels
 - ✅ Favorites (Zustand + localStorage, heart toggle on cards)
@@ -105,6 +106,7 @@ type ReadingStatus = "want" | "reading" | "read";
 - ✅ Lucide Heart icon (filled/outline toggle)
 - ✅ Cross-component state sync via Zustand
 - ✅ CSS variables used consistently across all components
+- ✅ Loading skeletons for trending, search results, and modal
 - ✅ Shareable book detail page at /book/[key]
 
 ## Recommended Next Steps
