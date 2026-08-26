@@ -78,7 +78,7 @@ function LibraryContent() {
         {urlTab === "reading" && (
           <section>
             <div className={styles.filters}>
-              {(["all", "want", "reading", "read"] as const).map((s) => (
+              {(["all", "want", "reading", "read", "dropped"] as const).map((s) => (
                 <button
                   key={s}
                   className={`${styles.filterBtn} ${statusFilter === s ? styles.filterActive : ""}`}

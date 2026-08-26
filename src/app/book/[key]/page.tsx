@@ -191,7 +191,7 @@ export default function BookDetailPage({
                 </button>
                 {showDropdown && (
                   <div className={styles.dropdown}>
-                    {(["want", "reading", "read"] as const).map((s) => (
+                    {(["want", "reading", "read", "dropped"] as const).map((s) => (
                       <button
                         key={s}
                         className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}

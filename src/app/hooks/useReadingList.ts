@@ -5,7 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { Book } from "../components/BookCard";
 import { withStorageDOMEvents } from "../utils/withStorageDOMEvents";
 
-export type ReadingStatus = "want" | "reading" | "read";
+export type ReadingStatus = "want" | "reading" | "read" | "dropped";
 
 interface ReadingEntry {
   book: Book;
