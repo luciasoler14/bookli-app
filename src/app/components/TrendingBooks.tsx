@@ -14,7 +14,7 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
   const elRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const { data: books, isLoading, error } = useTrending("fiction", 6);
+  const { data: books, isLoading, error } = useTrending(6);
 
   const touchState = useRef({ startX: 0, startY: 0, isDragging: false, scrollLeft: 0 });
 
@@ -86,7 +86,7 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
   if (isLoading) {
     return (
       <section className={styles.section}>
-        <h2 className={styles.title}>🔥 Trending / Popular</h2>
+        <h2 className={styles.title}>🔥 Trending This Week</h2>
         <TrendingSkeleton />
       </section>
     );
@@ -98,7 +98,7 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>🔥 Trending / Popular</h2>
+      <h2 className={styles.title}>🔥 Trending This Week</h2>
       <div className={styles.scrollWrapper}>
         {canScrollLeft && (
           <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={() => scroll("left")}>

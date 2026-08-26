@@ -1,42 +1,43 @@
 import { useQuery } from "@tanstack/react-query";
 import { Book } from "../components/BookCard";
 
-interface SubjectWork {
+interface TrendingWork {
   key: string;
   title: string;
-  authors?: { name: string; key: string }[];
-  cover_id?: number;
+  author_name?: string[];
+  cover_i?: number;
   first_publish_year?: number;
 }
 
-interface SubjectResponse {
-  works: SubjectWork[];
-  work_count: number;
+interface TrendingResponse {
+  works: TrendingWork[];
 }
 
-function mapWorkToBook(work: SubjectWork): Book {
+function mapWorkToBook(work: TrendingWork): Book {
   return {
     key: work.key,
     title: work.title,
-    author_name: work.authors?.map((a) => a.name),
+    author_name: work.author_name,
     first_publish_year: work.first_publish_year,
-    cover_i: work.cover_id,
+    cover_i: work.cover_i,
   };
 }
 
-async function fetchTrending(subject: string, limit: number): Promise<Book[]> {
-  const res = await fetch(
-    `https://openlibrary.org/subjects/${subject}.json?limit=${limit}`
-  );
+async function fetchTrending(): Promise<Book[]> {
+  const res = await fetch("https://openlibrary.org/trending/weekly.json");
+  
   if (!res.ok) throw new Error("Failed to fetch trending books");
-  const data: SubjectResponse = await res.json();
+  const data: TrendingResponse = await res.json();
   return data.works.map(mapWorkToBook);
 }
 
-export function useTrending(subject = "fiction", limit = 6) {
+export function useTrending(limit = 6) {
   return useQuery({
-    queryKey: ["trending", subject, limit],
-    queryFn: () => fetchTrending(subject, limit),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    queryKey: ["trending"],
+    queryFn: async () => {
+      const books = await fetchTrending();
+      return books.slice(0, limit);
+    },
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
