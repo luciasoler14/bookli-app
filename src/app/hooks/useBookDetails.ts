@@ -59,44 +59,28 @@ async function fetchBookDetails(key: string): Promise<BookDetails> {
   const authorKeys: string[] =
     data.authors?.map((a: { author: { key: string } }) => a.author?.key).filter(Boolean) || [];
 
-  const authors = await Promise.all(authorKeys.slice(0, 3).map(fetchAuthor));
+  const [authors, editionsData] = await Promise.all([
+    Promise.all(authorKeys.slice(0, 3).map(fetchAuthor)),
+    fetch(`https://openlibrary.org${key}/editions.json?limit=1`)
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null),
+  ]);
 
   const authorNames = authors.map((a) => a.name).filter(Boolean) as string[];
 
-  let cover_i: number | undefined;
-  let publisher: string[] | undefined;
-  let language: string[] | undefined;
-  let first_publish_year: number | undefined;
-
-  try {
-    const editionsRes = await fetch(
-      `https://openlibrary.org${key}/editions.json?limit=1`
-    );
-    if (editionsRes.ok) {
-      const editionsData = await editionsRes.json();
-      const edition = editionsData.entries?.[0];
-      if (edition) {
-        cover_i = edition.covers?.[0];
-        publisher = edition.publishers;
-        language = edition.languages?.map((l: { key: string }) =>
-          l.key.replace("/languages/", "")
-        );
-        first_publish_year = edition.first_publish_year;
-      }
-    }
-  } catch {
-    // editions fetch is optional
-  }
+  const edition = editionsData?.entries?.[0];
 
   return {
     book: {
       key,
       title: data.title,
       author_name: authorNames.length > 0 ? authorNames : undefined,
-      first_publish_year: first_publish_year || data.first_publish_year,
-      cover_i,
-      publisher,
-      language,
+      first_publish_year: edition?.first_publish_year || data.first_publish_year,
+      cover_i: edition?.covers?.[0],
+      publisher: edition?.publishers,
+      language: edition?.languages?.map((l: { key: string }) =>
+        l.key.replace("/languages/", "")
+      ),
     },
     description,
     subjects: data.subjects,
