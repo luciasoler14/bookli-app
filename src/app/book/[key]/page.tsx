@@ -8,13 +8,8 @@ import { getLanguageName } from "../../utils/languages";
 import { useBookDetails } from "../../hooks/useBookDetails";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useReadingList, ReadingStatus } from "../../hooks/useReadingList";
+import { STATUS_LABELS } from "../../utils/constants";
 import styles from "./page.module.css";
-
-const STATUS_LABELS: Record<ReadingStatus, string> = {
-  want: "Want to Read",
-  reading: "Reading",
-  read: "Read",
-};
 
 export default function BookDetailPage({
   params,

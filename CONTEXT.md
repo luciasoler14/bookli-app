@@ -42,6 +42,7 @@ src/app/
 │   ├── useBooks.ts         — Search query (React Query)
 │   ├── useBookDetails.ts   — Book + author details (React Query)
 │   ├── useTrending.ts      — Trending by subject (React Query)
+│   ├── useSubjectBooks.ts  — Books by subject with pagination (React Query)
 │   ├── useFavorites.ts     — Zustand store (persisted to localStorage)
 │   ├── useReadingList.ts   — Zustand store (persisted to localStorage)
 │   └── useSearchHistory.ts — Zustand store (persisted to localStorage, max 5)

@@ -7,13 +7,8 @@ import BookCard, { Book } from "../components/BookCard";
 import BookModal from "../components/BookModal";
 import { useFavoriteList } from "../hooks/useFavorites";
 import { useReadingListArray, ReadingStatus } from "../hooks/useReadingList";
+import { STATUS_LABELS } from "../utils/constants";
 import styles from "./library.module.css";
-
-const STATUS_LABELS: Record<ReadingStatus, string> = {
-  want: "Want to Read",
-  reading: "Reading",
-  read: "Read",
-};
 
 type Tab = "favorites" | "reading";
 

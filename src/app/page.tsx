@@ -8,6 +8,7 @@ import ExploreByGenre from "./components/ExploreByGenre";
 import Pagination from "./components/Pagination";
 import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
+import { useSubjectBooks } from "./hooks/useSubjectBooks";
 import { useSearchHistory } from "./hooks/useSearchHistory";
 import styles from "./page.module.css";
 
@@ -21,14 +22,33 @@ function HomeContent() {
   const urlPage = parseInt(searchParams.get("page") || "1", 10);
 
   const [query, setQuery] = useState(urlQuery);
+  const [subject, setSubject] = useState<string | null>(null);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 
-  const { data, isLoading, error } = useBooks(
+  const isSubjectSearch = !!subject && !urlQuery;
+
+  const { data: searchData, isLoading: searchLoading, error: searchError } = useBooks(
     urlQuery,
     urlPage,
-    urlQuery.length > 0,
+    urlQuery.length > 0 && !isSubjectSearch,
   );
+
+  const { data: subjectData, isLoading: subjectLoading } = useSubjectBooks(
+    isSubjectSearch ? subject : null,
+    urlPage,
+  );
+
+  const isLoading = isSubjectSearch ? subjectLoading : searchLoading;
+  const error = isSubjectSearch ? null : searchError;
+
+  const books = isSubjectSearch ? (subjectData?.books || []) : (searchData?.docs || []);
+  const numFound = isSubjectSearch ? (subjectData?.numFound || 0) : (searchData?.numFound || 0);
+  const totalPages = Math.min(Math.ceil(numFound / BOOKS_PER_PAGE), 100);
+
+  const displayTitle = isSubjectSearch
+    ? subject!.charAt(0).toUpperCase() + subject!.slice(1)
+    : urlQuery;
 
   const updateURL = (q: string, page: number) => {
     const params = new URLSearchParams();
@@ -41,39 +61,52 @@ function HomeContent() {
   const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
+    setSubject(null);
     updateURL(query, 1);
     addSearch(query);
   };
 
   const handleGenreSelect = (genre: string) => {
-    setQuery(genre);
-    updateURL(genre, 1);
+    setQuery("");
+    setSubject(genre.toLowerCase());
+    const params = new URLSearchParams();
+    router.push("/", { scroll: false });
   };
 
   const handleClear = () => {
     setQuery("");
+    setSubject(null);
     router.push("/");
   };
 
   const handleHistoryClick = (term: string) => {
     setQuery(term);
+    setSubject(null);
     updateURL(term, 1);
     addSearch(term);
   };
 
   const handlePageChange = (newPage: number) => {
-    updateURL(urlQuery, newPage);
+    if (isSubjectSearch) {
+      const params = new URLSearchParams();
+      params.set("q", `subject:${subject}`);
+      if (newPage > 1) params.set("page", newPage.toString());
+      router.push(`/?${params.toString()}`, { scroll: false });
+    } else {
+      updateURL(urlQuery, newPage);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const books = data?.docs || [];
-  const numFound = data?.numFound || 0;
-  const totalPages = Math.min(Math.ceil(numFound / BOOKS_PER_PAGE), 100);
+  const showHero = !urlQuery && !isSubjectSearch;
+  const showHistory = !urlQuery && !isSubjectSearch && history.length > 0;
+  const showGenres = !urlQuery && !isSubjectSearch;
+  const showTrending = !urlQuery && !isSubjectSearch;
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        {!urlQuery && (
+        {showHero && (
           <section className={styles.hero}>
             <h1 className={styles.title}>
               DISCOVER YOUR NEXT <br />
@@ -94,7 +127,7 @@ function HomeContent() {
               placeholder="Search for books or authors..."
               className={styles.searchInput}
             />
-            {urlQuery && (
+            {(urlQuery || isSubjectSearch) && (
               <button
                 type="button"
                 className={styles.clearButton}
@@ -113,7 +146,7 @@ function HomeContent() {
           </button>
         </form>
 
-        {!urlQuery && history.length > 0 && (
+        {showHistory && (
           <div className={styles.history}>
             {history.map((term) => (
               <div key={term} className={styles.historyChip}>
@@ -137,7 +170,7 @@ function HomeContent() {
           </div>
         )}
 
-        {!urlQuery && <ExploreByGenre onSelect={handleGenreSelect} />}
+        {showGenres && <ExploreByGenre onSelect={handleGenreSelect} />}
 
         {isLoading && (
           <div className={styles.loading}>
@@ -155,8 +188,9 @@ function HomeContent() {
         {!isLoading && books.length > 0 && (
           <section className={styles.results}>
             <h2 className={styles.resultsTitle}>
-              Found {numFound.toLocaleString()} books for &quot;{urlQuery}
-              &quot; — Page {urlPage} of {totalPages}
+              {isSubjectSearch
+                ? `Showing ${numFound.toLocaleString()} books in ${displayTitle} — Page ${urlPage} of ${totalPages}`
+                : `Found ${numFound.toLocaleString()} books for &quot;${displayTitle}&quot; — Page ${urlPage} of ${totalPages}`}
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
@@ -171,16 +205,16 @@ function HomeContent() {
           </section>
         )}
 
-        {!isLoading && urlQuery && !error && books.length === 0 && (
+        {!isLoading && (urlQuery || isSubjectSearch) && !error && books.length === 0 && (
           <div className={styles.noResults}>
             <p>
-              No books found for &quot;{urlQuery}&quot;. Try a different
+              No books found for &quot;{displayTitle}&quot;. Try a different
               search term.
             </p>
           </div>
         )}
 
-        {!urlQuery && <TrendingBooks onBookClick={setSelectedBook} />}
+        {showTrending && <TrendingBooks onBookClick={setSelectedBook} />}
       </main>
       {selectedBook && (
         <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
