@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import BookCard, { Book } from "./components/BookCard";
 import BookModal from "./components/BookModal";
 import ExploreByGenre from "./components/ExploreByGenre";
@@ -12,48 +13,56 @@ import styles from "./page.module.css";
 
 const BOOKS_PER_PAGE = 20;
 
-export default function Home() {
-  const [query, setQuery] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const urlQuery = searchParams.get("q") || "";
+  const urlPage = parseInt(searchParams.get("page") || "1", 10);
+
+  const [query, setQuery] = useState(urlQuery);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 
   const { data, isLoading, error } = useBooks(
-    searchQuery,
-    page,
-    searchQuery.length > 0,
+    urlQuery,
+    urlPage,
+    urlQuery.length > 0,
   );
+
+  const updateURL = (q: string, page: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (page > 1) params.set("page", page.toString());
+    const qs = params.toString();
+    router.push(qs ? `/?${qs}` : "/", { scroll: false });
+  };
 
   const searchBooks = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    setPage(1);
-    setSearchQuery(query);
+    updateURL(query, 1);
     addSearch(query);
   };
 
   const handleGenreSelect = (genre: string) => {
     setQuery(genre);
-    setSearchQuery(genre);
-    setPage(1);
+    updateURL(genre, 1);
   };
 
   const handleClear = () => {
     setQuery("");
-    setSearchQuery("");
-    setPage(1);
+    router.push("/");
   };
 
   const handleHistoryClick = (term: string) => {
     setQuery(term);
-    setSearchQuery(term);
-    setPage(1);
+    updateURL(term, 1);
     addSearch(term);
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    updateURL(urlQuery, newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -64,7 +73,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        {!searchQuery && (
+        {!urlQuery && (
           <section className={styles.hero}>
             <h1 className={styles.title}>
               DISCOVER YOUR NEXT <br />
@@ -85,7 +94,7 @@ export default function Home() {
               placeholder="Search for books or authors..."
               className={styles.searchInput}
             />
-            {searchQuery && (
+            {urlQuery && (
               <button
                 type="button"
                 className={styles.clearButton}
@@ -104,7 +113,7 @@ export default function Home() {
           </button>
         </form>
 
-        {!searchQuery && history.length > 0 && (
+        {!urlQuery && history.length > 0 && (
           <div className={styles.history}>
             {history.map((term) => (
               <div key={term} className={styles.historyChip}>
@@ -128,7 +137,7 @@ export default function Home() {
           </div>
         )}
 
-        {!searchQuery && <ExploreByGenre onSelect={handleGenreSelect} />}
+        {!urlQuery && <ExploreByGenre onSelect={handleGenreSelect} />}
 
         {isLoading && (
           <div className={styles.loading}>
@@ -146,8 +155,8 @@ export default function Home() {
         {!isLoading && books.length > 0 && (
           <section className={styles.results}>
             <h2 className={styles.resultsTitle}>
-              Found {numFound.toLocaleString()} books for &quot;{searchQuery}
-              &quot; — Page {page} of {totalPages}
+              Found {numFound.toLocaleString()} books for &quot;{urlQuery}
+              &quot; — Page {urlPage} of {totalPages}
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
@@ -155,27 +164,35 @@ export default function Home() {
               ))}
             </div>
             <Pagination
-              currentPage={page}
+              currentPage={urlPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
           </section>
         )}
 
-        {!isLoading && searchQuery && !error && books.length === 0 && (
+        {!isLoading && urlQuery && !error && books.length === 0 && (
           <div className={styles.noResults}>
             <p>
-              No books found for &quot;{searchQuery}&quot;. Try a different
+              No books found for &quot;{urlQuery}&quot;. Try a different
               search term.
             </p>
           </div>
         )}
 
-        {!searchQuery && <TrendingBooks onBookClick={setSelectedBook} />}
+        {!urlQuery && <TrendingBooks onBookClick={setSelectedBook} />}
       </main>
       {selectedBook && (
         <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   );
 }

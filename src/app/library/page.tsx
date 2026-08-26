@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import BookCard, { Book } from "../components/BookCard";
 import BookModal from "../components/BookModal";
@@ -14,12 +15,24 @@ const STATUS_LABELS: Record<ReadingStatus, string> = {
   read: "Read",
 };
 
-export default function LibraryPage() {
-  const [activeTab, setActiveTab] = useState<"favorites" | "reading">("favorites");
+type Tab = "favorites" | "reading";
+
+function LibraryContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const urlTab = (searchParams.get("tab") as Tab) || "favorites";
   const [statusFilter, setStatusFilter] = useState<ReadingStatus | "all">("all");
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const favoriteList = useFavoriteList();
   const readingListArray = useReadingListArray();
+
+  const handleTabChange = (tab: Tab) => {
+    const params = new URLSearchParams();
+    if (tab !== "favorites") params.set("tab", tab);
+    const qs = params.toString();
+    router.push(qs ? `/library?${qs}` : "/library", { scroll: false });
+  };
 
   const filteredReading =
     statusFilter === "all"
@@ -33,20 +46,20 @@ export default function LibraryPage() {
 
         <div className={styles.tabs}>
           <button
-            className={`${styles.tab} ${activeTab === "favorites" ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab("favorites")}
+            className={`${styles.tab} ${urlTab === "favorites" ? styles.tabActive : ""}`}
+            onClick={() => handleTabChange("favorites")}
           >
             Favorites ({favoriteList.length})
           </button>
           <button
-            className={`${styles.tab} ${activeTab === "reading" ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab("reading")}
+            className={`${styles.tab} ${urlTab === "reading" ? styles.tabActive : ""}`}
+            onClick={() => handleTabChange("reading")}
           >
             Reading List ({readingListArray.length})
           </button>
         </div>
 
-        {activeTab === "favorites" && (
+        {urlTab === "favorites" && (
           <section>
             {favoriteList.length === 0 ? (
               <div className={styles.empty}>
@@ -67,7 +80,7 @@ export default function LibraryPage() {
           </section>
         )}
 
-        {activeTab === "reading" && (
+        {urlTab === "reading" && (
           <section>
             <div className={styles.filters}>
               {(["all", "want", "reading", "read"] as const).map((s) => (
@@ -103,5 +116,13 @@ export default function LibraryPage() {
         <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
       )}
     </div>
+  );
+}
+
+export default function LibraryPage() {
+  return (
+    <Suspense>
+      <LibraryContent />
+    </Suspense>
   );
 }

@@ -12,9 +12,9 @@
 - **API:** Open Library (search, works, authors, subjects, covers)
 
 ## Routes
-- `/` — Home (search, trending, genre explorer)
+- `/` — Home (search, trending, genre explorer) — `?q=python&page=2`
 - `/book/[key]` — Book detail page (full details, shareable URL)
-- `/library` — My Library (favorites + reading list)
+- `/library` — My Library (favorites + reading list) — `?tab=reading`
 
 ## Architecture
 
