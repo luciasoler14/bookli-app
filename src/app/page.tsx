@@ -68,7 +68,7 @@ function HomeContent() {
   };
 
   const handleGenreSelect = (genre: string) => {
-    setQuery("");
+    setQuery(genre);
     updateURL("", 1, genre.toLowerCase());
   };
 
