@@ -75,10 +75,18 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
     setShowDropdown(false);
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 1) {
+      e.preventDefault();
+      window.open(`/book/${encodeURIComponent(book.key)}`, "_blank");
+    }
+  };
+
   return (
     <div
       className={styles.card}
       onClick={() => onClick?.(book)}
+      onMouseDown={handleMouseDown}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >

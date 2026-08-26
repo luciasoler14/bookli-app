@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getCoverUrl } from "../../utils/getCoverUrl";
@@ -33,6 +33,20 @@ export default function BookDetailPage({
     updateStatus,
     isInReadingList,
   } = useReadingList();
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showDropdown]);
 
   const book = details?.book;
   const isFav = book ? isFavorite(book.key) : false;
@@ -167,46 +181,48 @@ export default function BookDetailPage({
                 onClick={() => book && toggleFavorite(book)}
               >
                 <span>{isFav ? "♥" : "♡"}</span>
-                <span>{isFav ? "Favorited" : "Add to Favorites"}</span>
+                <span>{isFav ? "Favorited" : "Favorite"}</span>
               </button>
 
-              <div className={styles.statusGroup}>
+              <div className={styles.dropdownWrapper} ref={dropdownRef}>
                 <button
                   className={`${styles.actionBtn} ${inList ? styles.actionBtnReading : ""}`}
-                  onClick={() => {
-                    if (inList) {
-                      removeFromReadingList(book.key);
-                    } else {
-                      addToReadingList(book);
-                    }
-                  }}
+                  onClick={() => setShowDropdown(!showDropdown)}
                 >
-                  {inList ? STATUS_LABELS[getStatus(book.key)!] : "+ Reading List"}
+                  {inList ? STATUS_LABELS[getStatus(book.key)!] : "Reading List"}
                 </button>
-
-                {inList && (
-                  <div className={styles.statusOptions}>
+                {showDropdown && (
+                  <div className={styles.dropdown}>
                     {(["want", "reading", "read"] as const).map((s) => (
                       <button
                         key={s}
-                        className={`${styles.statusOption} ${getStatus(book.key) === s ? styles.statusOptionActive : ""}`}
-                        onClick={() => updateStatus(book.key, s)}
+                        className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
+                        onClick={() => {
+                          if (inList) {
+                            updateStatus(book.key, s);
+                          } else {
+                            addToReadingList(book, s);
+                          }
+                          setShowDropdown(false);
+                        }}
                       >
                         {STATUS_LABELS[s]}
                       </button>
                     ))}
+                    {inList && (
+                      <button
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          removeFromReadingList(book.key);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
-
-              <a
-                href={`https://openlibrary.org${book.key}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.actionBtn}
-              >
-                Open in Open Library ↗
-              </a>
             </div>
           </div>
         </div>

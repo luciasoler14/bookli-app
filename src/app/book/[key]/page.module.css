@@ -171,8 +171,8 @@
 }
 
 .actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -180,18 +180,22 @@
 }
 
 .actionBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  width: 100%;
+  height: 42px;
+  padding: 0 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   background: white;
   color: var(--text);
-  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  line-height: 1;
 }
 
 .actionBtn:hover {
@@ -223,43 +227,47 @@
   color: white;
 }
 
-.statusGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.dropdownWrapper {
+  position: relative;
 }
 
-.statusOptions {
-  display: flex;
-  gap: 0.5rem;
+.dropdownWrapper .actionBtn {
+  width: 100%;
 }
 
-.statusOption {
-  padding: 0.4rem 0.8rem;
+.dropdown {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  text-align: left;
+  border: none;
   background: white;
   color: var(--text);
-  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.15s;
 }
 
-.statusOption:hover {
-  border-color: var(--primary);
+.dropdownItem:hover {
+  background: var(--surface-hover);
+}
+
+.dropdownItemActive {
   color: var(--primary);
-}
-
-.statusOptionActive {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.statusOptionActive:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-  color: white;
+  font-weight: 600;
 }
 
 @media (max-width: 700px) {
@@ -283,10 +291,6 @@
   }
 
   .actions {
-    justify-content: center;
-  }
-
-  .statusOptions {
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
