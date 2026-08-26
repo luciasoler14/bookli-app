@@ -53,7 +53,8 @@ export default function BookModal({ book, onClose }: BookModalProps) {
         <button className={styles.closeButton} onClick={onClose}>
           ✕
         </button>
-        <div className={styles.content}>
+        <div className={styles.scrollArea}>
+          <div className={styles.content}>
           <div className={styles.coverSection}>
             {book.cover_i ? (
               <div className={styles.coverWrapper}>
@@ -179,6 +180,7 @@ export default function BookModal({ book, onClose }: BookModalProps) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

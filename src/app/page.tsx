@@ -167,9 +167,9 @@ function HomeContent() {
         {showGenres && <ExploreByGenre onSelect={handleGenreSelect} />}
 
         {isLoading && (
-          <div className={styles.loading}>
+          <section className={styles.results}>
             <SearchResultsSkeleton />
-          </div>
+          </section>
         )}
 
         {error && (
@@ -183,7 +183,7 @@ function HomeContent() {
             <h2 className={styles.resultsTitle}>
               {isSubjectSearch
                 ? `Showing ${numFound.toLocaleString()} books in ${displayTitle} — Page ${urlPage} of ${totalPages}`
-                : `Found ${numFound.toLocaleString()} books for &quot;${displayTitle}&quot; — Page ${urlPage} of ${totalPages}`}
+                : `Found ${numFound.toLocaleString()} books for "${displayTitle}" — Page ${urlPage} of ${totalPages}`}
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
