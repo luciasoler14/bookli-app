@@ -125,14 +125,14 @@ export default function BookModal({ book, onClose }: BookModalProps) {
                 className={styles.actionBtn}
                 onClick={onClose}
               >
-                View Full Details →
+                Details →
               </Link>
               <button
                 className={`${styles.actionBtn} ${isFavorite(book.key) ? styles.actionBtnActive : ""}`}
                 onClick={() => toggleFavorite(book)}
               >
                 <span>{isFavorite(book.key) ? "♥" : "♡"}</span>
-                <span>{isFavorite(book.key) ? "Favorited" : "Add to Favorites"}</span>
+                <span>{isFavorite(book.key) ? "Favorited" : "Favorite"}</span>
               </button>
               <div className={styles.dropdownWrapper} ref={dropdownRef}>
                 <button
