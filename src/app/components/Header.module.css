@@ -2,43 +2,50 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--header);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  background: var(--gradient-header);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(168, 32, 58, 0.15);
 }
 
 .inner {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: 56px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: white;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .nav {
   display: flex;
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
 .link {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
-  transition: color 0.2s;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-full);
+  transition: all var(--duration-normal) var(--ease-smooth);
+  position: relative;
 }
 
 .link:hover {
   color: white;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .active {
   color: white;
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 600;
 }

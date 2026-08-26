@@ -1,14 +1,15 @@
 .section {
   width: 100%;
   max-width: 1200px;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text);
+  margin-bottom: 1.25rem;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
 }
 
 .scrollWrapper {
@@ -25,6 +26,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 0.25rem 0;
 }
 
 .scrollContainer::-webkit-scrollbar {
@@ -35,32 +37,36 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border);
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  font-size: 1.2rem;
+  box-shadow: var(--shadow-md);
+  font-size: 1.3rem;
   cursor: pointer;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  color: var(--text);
 }
 
 .arrow:hover {
-  background: var(--surface-hover);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: var(--gradient-primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: var(--shadow-primary);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .arrowLeft {
-  left: -12px;
+  left: -14px;
 }
 
 .arrowRight {
-  right: -12px;
+  right: -14px;
 }
 
 .cardWrapper {

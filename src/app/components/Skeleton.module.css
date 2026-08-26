@@ -2,7 +2,7 @@
   background: linear-gradient(90deg, var(--surface) 25%, var(--surface-hover) 50%, var(--surface) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 @keyframes shimmer {
@@ -12,9 +12,10 @@
 
 .bookCard {
   background: white;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .bookCover {
@@ -24,7 +25,7 @@
 }
 
 .bookTitle {
-  margin: 0.75rem 1rem 0.25rem;
+  margin: 0.8rem 1rem 0.3rem;
   height: 16px;
   width: 80%;
 }
@@ -44,12 +45,12 @@
 .modalCover {
   width: 200px;
   height: 300px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   flex-shrink: 0;
 }
 
 .modalTitle {
-  height: 22px;
+  height: 24px;
   width: 70%;
   margin-bottom: 0.5rem;
 }
@@ -57,7 +58,7 @@
 .modalAuthor {
   height: 16px;
   width: 50%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .modalLine {
@@ -75,29 +76,29 @@
 .modalTag {
   height: 28px;
   width: 80px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   display: inline-block;
-  margin-right: 0.5rem;
+  margin-right: 0.45rem;
 }
 
 .modalActions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--muted-border);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .modalBtn {
-  height: 38px;
-  border-radius: 8px;
+  height: 40px;
+  border-radius: var(--radius-md);
 }
 
 .detailCover {
   width: 280px;
   height: 420px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
 }
 
@@ -134,13 +135,13 @@
 .detailActions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--muted-border);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .detailBtn {
   height: 42px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
 }
