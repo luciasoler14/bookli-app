@@ -13,12 +13,12 @@ Mejoras pendientes, ordenadas por prioridad.
 
 ## Media prioridad (mejoras de UX)
 
-- [ ] **Pagination en inglés** — "Anterior"/"Siguiente" → "Previous"/"Next".
+- [x] **Pagination en inglés** — "Anterior"/"Siguiente" → "Previous"/"Next".
 - [ ] **Loading skeletons** — Skeletons para trending, resultados de búsqueda y modal. Mantienen layout estable.
 - [ ] **Touch/swipe en trending carousel** — Soporte swipe en mobile.
 - [ ] **Mobile hamburger menu** — Menú responsive en el header.
 - [ ] **Reading progress tracking** — Status "Reading" con input de página actual (X de Y).
-- [ ] **Search history** — Guardar últimas 5 búsquedas para reutilizar.
+- [x] **Search history** — Guardar últimas 5 búsquedas para reutilizar.
 
 ## Baja prioridad (nice-to-have)
 

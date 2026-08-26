@@ -43,7 +43,8 @@ src/app/
 │   ├── useBookDetails.ts   — Book + author details (React Query)
 │   ├── useTrending.ts      — Trending by subject (React Query)
 │   ├── useFavorites.ts     — Zustand store (persisted to localStorage)
-│   └── useReadingList.ts   — Zustand store (persisted to localStorage)
+│   ├── useReadingList.ts   — Zustand store (persisted to localStorage)
+│   └── useSearchHistory.ts — Zustand store (persisted to localStorage, max 5)
 │
 ├── utils/
 │   ├── getCoverUrl.ts          — Open Library cover URL builder

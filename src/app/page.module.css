@@ -104,6 +104,51 @@
   cursor: not-allowed;
 }
 
+.history {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.historyChip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--surface);
+  border-radius: 9999px;
+  padding-left: 0.75rem;
+}
+
+.historyTerm {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0.4rem 0;
+}
+
+.historyTerm:hover {
+  color: var(--primary);
+}
+
+.historyRemove {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  line-height: 1;
+}
+
+.historyRemove:hover {
+  color: var(--primary);
+}
+
 .loading {
   display: flex;
   flex-direction: column;

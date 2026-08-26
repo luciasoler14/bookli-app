@@ -32,7 +32,13 @@ interface BookCardProps {
 
 export default function BookCard({ book, onClick, extra }: BookCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { getStatus, addToReadingList, removeFromReadingList, updateStatus, isInReadingList } = useReadingList();
+  const {
+    getStatus,
+    addToReadingList,
+    removeFromReadingList,
+    updateStatus,
+    isInReadingList,
+  } = useReadingList();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const favorited = isFavorite(book.key);
@@ -41,7 +47,10 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
   useEffect(() => {
     if (!showDropdown) return;
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setShowDropdown(false);
       }
     };
@@ -98,6 +107,7 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
             className={styles.cover}
             fill
             unoptimized
+            loading="eager"
           />
           <button
             className={`${styles.heart} ${favorited ? styles.heartActive : ""}`}
@@ -124,7 +134,10 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
                   </button>
                 ))}
                 {inReadingList && (
-                  <button className={styles.dropdownItem} onClick={handleRemove}>
+                  <button
+                    className={styles.dropdownItem}
+                    onClick={handleRemove}
+                  >
                     Remove
                   </button>
                 )}

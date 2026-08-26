@@ -7,6 +7,7 @@ import ExploreByGenre from "./components/ExploreByGenre";
 import Pagination from "./components/Pagination";
 import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
+import { useSearchHistory } from "./hooks/useSearchHistory";
 import styles from "./page.module.css";
 
 const BOOKS_PER_PAGE = 20;
@@ -16,6 +17,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const { history, addSearch, removeSearch } = useSearchHistory();
 
   const { data, isLoading, error } = useBooks(
     searchQuery,
@@ -28,6 +30,7 @@ export default function Home() {
     if (!query.trim()) return;
     setPage(1);
     setSearchQuery(query);
+    addSearch(query);
   };
 
   const handleGenreSelect = (genre: string) => {
@@ -40,6 +43,13 @@ export default function Home() {
     setQuery("");
     setSearchQuery("");
     setPage(1);
+  };
+
+  const handleHistoryClick = (term: string) => {
+    setQuery(term);
+    setSearchQuery(term);
+    setPage(1);
+    addSearch(term);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -93,6 +103,30 @@ export default function Home() {
             {isLoading ? "Searching..." : "Search"}
           </button>
         </form>
+
+        {!searchQuery && history.length > 0 && (
+          <div className={styles.history}>
+            {history.map((term) => (
+              <div key={term} className={styles.historyChip}>
+                <button
+                  className={styles.historyTerm}
+                  onClick={() => handleHistoryClick(term)}
+                >
+                  {term}
+                </button>
+                <button
+                  className={styles.historyRemove}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeSearch(term);
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {!searchQuery && <ExploreByGenre onSelect={handleGenreSelect} />}
 
