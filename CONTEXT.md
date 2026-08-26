@@ -13,6 +13,7 @@
 
 ## Routes
 - `/` — Home (search, trending, genre explorer)
+- `/book/[key]` — Book detail page (full details, shareable URL)
 - `/library` — My Library (favorites + reading list)
 
 ## Architecture
@@ -23,6 +24,11 @@ src/app/
 ├── page.tsx                — Home page (search, trending, results, modal)
 ├── providers.tsx           — React Query QueryClientProvider
 ├── globals.css             — CSS variables (design tokens)
+│
+├── book/
+│   └── [key]/
+│       ├── page.tsx        — Book detail page (shareable URL)
+│       └── page.module.css
 │
 ├── components/
 │   ├── Header.tsx          — Sticky nav: logo + Home + My Library
@@ -83,6 +89,7 @@ type ReadingStatus = "want" | "reading" | "read";
 - **Language names** — Mapped from ISO codes to English names in `utils/languages.ts`
 - **Modal fetches author details** — `useBookDetails` fetches works endpoint + up to 3 author profiles
 - **All CSS uses variables** — No hardcoded hex values outside `globals.css`
+- **Shareable book detail page** — `/book/[key]` route for sharing links, with "View Full Details" link from modal
 
 ## Current State
 - ✅ Book search with pagination
@@ -96,6 +103,7 @@ type ReadingStatus = "want" | "reading" | "read";
 - ✅ Lucide Heart icon (filled/outline toggle)
 - ✅ Cross-component state sync via Zustand
 - ✅ CSS variables used consistently across all components
+- ✅ Shareable book detail page at /book/[key]
 
 ## Recommended Next Steps
 Ver `ROADMAP.md` para la lista completa de mejoras pendientes.

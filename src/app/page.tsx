@@ -72,7 +72,7 @@ export default function Home() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search for books, authors, or ISBN..."
+              placeholder="Search for books or authors..."
               className={styles.searchInput}
             />
             {searchQuery && (

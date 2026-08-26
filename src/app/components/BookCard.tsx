@@ -22,7 +22,6 @@ export interface Book {
   cover_i?: number;
   publisher?: string[];
   language?: string[];
-  isbn?: string[];
 }
 
 interface BookCardProps {

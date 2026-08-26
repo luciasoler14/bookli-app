@@ -156,43 +156,6 @@
   border-radius: 20px;
 }
 
-.authorSection {
-  border-top: 1px solid var(--muted-border);
-  padding-top: 1rem;
-  margin-top: 1rem;
-}
-
-.authorCard {
-  padding: 0.75rem 0;
-}
-
-.authorCard + .authorCard {
-  border-top: 1px solid var(--surface);
-}
-
-.authorName {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 0.25rem;
-}
-
-.authorDates {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-bottom: 0.5rem;
-}
-
-.authorBio {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--text-light);
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .actions {
   display: flex;
   gap: 0.75rem;

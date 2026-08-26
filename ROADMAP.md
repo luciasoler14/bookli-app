@@ -6,9 +6,9 @@ Mejoras pendientes, ordenadas por prioridad.
 
 ## Alta prioridad (core UX)
 
+- [x] **Ruta dedicada `/book/[key]`** — Página con detalle completo del libro, URL compartible. Incluye "Open in Open Library" link.
 - [ ] **Estado en URL** — Sincronizar `?q=python&page=2&tab=favorites` con `useSearchParams`. Búsqueda, página y tab de Library sobreviven refresh y links compartidos.
 - [ ] **Búsqueda por subjects** — Los genre chips deberían usar `/subjects/{subject}.json` en vez de `search.json?q=Mystery`. Resultados más precisos.
-- [ ] **"Open in Open Library" link en el modal** — Link a `openlibrary.org{key}` para explorar más, pedir prestado, etc.
 - [ ] **Subject tags clickeables** — Los tags en el modal deberían buscar libros de ese subject al hacer clic.
 
 ## Media prioridad (mejoras de UX)

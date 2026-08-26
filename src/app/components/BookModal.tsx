@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Book } from "./BookCard";
 import { getCoverUrl } from "../utils/getCoverUrl";
 import { getLanguageName } from "../utils/languages";
@@ -103,35 +104,12 @@ export default function BookModal({ book, onClose }: BookModalProps) {
                   {book.language.slice(0, 3).map(getLanguageName).join(", ")}
                 </p>
               )}
-              {book.isbn?.[0] && (
-                <p className={styles.metaItem}>
-                  <span className={styles.metaLabel}>ISBN: </span>
-                  {book.isbn[0]}
-                </p>
-              )}
             </div>
             {isLoading ? (
               <p className={styles.descriptionLoading}>Loading description...</p>
             ) : details?.description ? (
               <p className={styles.description}>{details.description}</p>
             ) : null}
-            {details?.authors && details.authors.length > 0 && (
-              <div className={styles.authorSection}>
-                {details.authors.map((author, i) => (
-                  <div key={i} className={styles.authorCard}>
-                    <h4 className={styles.authorName}>{author.name}</h4>
-                    {(author.birth_date || author.death_date) && (
-                      <p className={styles.authorDates}>
-                        {author.birth_date || "?"} — {author.death_date || "?"}
-                      </p>
-                    )}
-                    {author.bio && (
-                      <p className={styles.authorBio}>{author.bio}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
             {details?.subjects && details.subjects.length > 0 && (
               <div className={styles.subjects}>
                 {details.subjects.slice(0, 8).map((subject) => (
@@ -142,6 +120,13 @@ export default function BookModal({ book, onClose }: BookModalProps) {
               </div>
             )}
             <div className={styles.actions}>
+              <Link
+                href={`/book/${encodeURIComponent(book.key)}`}
+                className={styles.actionBtn}
+                onClick={onClose}
+              >
+                View Full Details →
+              </Link>
               <button
                 className={`${styles.actionBtn} ${isFavorite(book.key) ? styles.actionBtnActive : ""}`}
                 onClick={() => toggleFavorite(book)}
