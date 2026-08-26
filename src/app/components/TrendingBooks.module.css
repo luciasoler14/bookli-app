@@ -21,6 +21,14 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   width: 100%;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .arrow {
@@ -64,4 +72,15 @@
 .loading {
   color: var(--text-light);
   padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .arrow {
+    display: none;
+  }
+
+  .scrollWrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import BookCard, { Book } from "./BookCard";
 import { useTrending } from "../hooks/useTrending";
 import styles from "./TrendingBooks.module.css";
@@ -10,35 +10,76 @@ interface TrendingBooksProps {
 }
 
 export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const elRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const { data: books, isLoading, error } = useTrending("fiction", 6);
 
+  const touchState = useRef({ startX: 0, startY: 0, isDragging: false, scrollLeft: 0 });
+
   const updateArrows = useCallback(() => {
-    const el = scrollRef.current;
+    const el = elRef.current;
     if (!el) return;
     setCanScrollLeft(el.scrollLeft > 0);
     setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
   }, []);
 
-  useEffect(() => {
-    const el = scrollRef.current;
+  function handleTouchStart(e: TouchEvent) {
+    const el = elRef.current;
     if (!el) return;
-    updateArrows();
-    el.addEventListener("scroll", updateArrows, { passive: true });
-    const observer = new ResizeObserver(updateArrows);
-    observer.observe(el);
-    return () => {
-      el.removeEventListener("scroll", updateArrows);
-      observer.disconnect();
+    touchState.current = {
+      startX: e.touches[0].pageX,
+      startY: e.touches[0].pageY,
+      isDragging: true,
+      scrollLeft: el.scrollLeft,
     };
-  }, [updateArrows, books]);
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    if (!touchState.current.isDragging) return;
+    const el = elRef.current;
+    if (!el) return;
+
+    const deltaX = e.touches[0].pageX - touchState.current.startX;
+    const deltaY = e.touches[0].pageY - touchState.current.startY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      e.preventDefault();
+      el.scrollLeft = touchState.current.scrollLeft - deltaX;
+    }
+  }
+
+  function handleTouchEnd() {
+    touchState.current.isDragging = false;
+  }
+
+  const scrollRefCallback = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (elRef.current) {
+        elRef.current.removeEventListener("scroll", updateArrows);
+        elRef.current.removeEventListener("touchstart", handleTouchStart);
+        elRef.current.removeEventListener("touchmove", handleTouchMove);
+        elRef.current.removeEventListener("touchend", handleTouchEnd);
+      }
+
+      elRef.current = node;
+
+      if (node) {
+        updateArrows();
+        node.addEventListener("scroll", updateArrows, { passive: true });
+        node.addEventListener("touchstart", handleTouchStart, { passive: true });
+        node.addEventListener("touchmove", handleTouchMove, { passive: false });
+        node.addEventListener("touchend", handleTouchEnd, { passive: true });
+      }
+    },
+    [updateArrows],
+  );
 
   const scroll = (direction: "left" | "right") => {
-    if (!scrollRef.current) return;
+    const el = elRef.current;
+    if (!el) return;
     const amount = direction === "left" ? -400 : 400;
-    scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    el.scrollBy({ left: amount, behavior: "smooth" });
   };
 
   if (isLoading) {
@@ -63,7 +104,7 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
             &#8249;
           </button>
         )}
-        <div className={styles.scrollContainer} ref={scrollRef}>
+        <div className={styles.scrollContainer} ref={scrollRefCallback}>
           {books.map((book) => (
             <div key={book.key} className={styles.cardWrapper}>
               <BookCard book={book} onClick={onBookClick} />
