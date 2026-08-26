@@ -61,3 +61,33 @@ export function ModalSkeleton() {
     </div>
   );
 }
+
+export function BookDetailSkeleton() {
+  return (
+    <div style={{ display: "flex", gap: "3rem" }}>
+      <Bone className={styles.detailCover} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <Bone className={styles.detailTitle} />
+        <Bone className={styles.detailAuthor} />
+        <Bone className={styles.detailLine} />
+        <Bone className={styles.detailLineShort} />
+        <Bone className={styles.detailLine} />
+        <div style={{ marginTop: "2rem" }}>
+          <Bone className={styles.detailSectionTitle} />
+          <Bone className={styles.detailLine} />
+          <Bone className={styles.detailLine} />
+          <Bone className={styles.detailLineShort} />
+        </div>
+        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1.5rem" }}>
+          <Bone className={styles.modalTag} />
+          <Bone className={styles.modalTag} />
+          <Bone className={styles.modalTag} />
+        </div>
+        <div className={styles.detailActions}>
+          <Bone className={styles.detailBtn} />
+          <Bone className={styles.detailBtn} />
+        </div>
+      </div>
+    </div>
+  );
+}

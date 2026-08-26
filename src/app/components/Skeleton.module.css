@@ -93,3 +93,54 @@
   height: 38px;
   border-radius: 8px;
 }
+
+.detailCover {
+  width: 280px;
+  height: 420px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.detailTitle {
+  height: 28px;
+  width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.detailAuthor {
+  height: 16px;
+  width: 45%;
+  margin-bottom: 1.5rem;
+}
+
+.detailLine {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.detailLineShort {
+  height: 14px;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.detailSectionTitle {
+  height: 18px;
+  width: 120px;
+  margin-bottom: 0.75rem;
+}
+
+.detailActions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--muted-border);
+}
+
+.detailBtn {
+  height: 42px;
+  border-radius: 8px;
+}

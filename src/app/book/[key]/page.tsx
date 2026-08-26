@@ -9,6 +9,7 @@ import { useBookDetails } from "../../hooks/useBookDetails";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useReadingList, ReadingStatus } from "../../hooks/useReadingList";
 import { STATUS_LABELS } from "../../utils/constants";
+import { BookDetailSkeleton } from "../../components/Skeleton";
 import styles from "./page.module.css";
 
 export default function BookDetailPage({
@@ -51,7 +52,9 @@ export default function BookDetailPage({
     return (
       <div className={styles.page}>
         <main className={styles.main}>
-          <div className={styles.loading}>Loading book details...</div>
+          <div className={styles.loading}>
+            <BookDetailSkeleton />
+          </div>
         </main>
       </div>
     );
