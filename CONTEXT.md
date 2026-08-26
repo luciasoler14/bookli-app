@@ -40,8 +40,9 @@ src/app/
 │   └── useReadingList.ts   — Zustand store (persisted to localStorage)
 │
 ├── utils/
-│   ├── getCoverUrl.ts      — Open Library cover URL builder
-│   └── languages.ts        — ISO code → language name mapping (~70 codes)
+│   ├── getCoverUrl.ts          — Open Library cover URL builder
+│   ├── languages.ts            — ISO code → language name mapping (~70 codes)
+│   └── withStorageDOMEvents.ts — Cross-tab sync helper for Zustand stores
 │
 └── library/
     ├── page.tsx            — Library page (favorites + reading list tabs)
@@ -74,7 +75,8 @@ type ReadingStatus = "want" | "reading" | "read";
 
 ## Key Decisions
 - **Zustand over Context** — Switched from React Context to Zustand for simpler shared state, no Provider needed, and built-in persist middleware
-- **Zustand `persist` with custom storage** — Explicit `localStorage` wrappers to ensure cross-tab `storage` event sync works correctly
+- **Zustand `persist` with `createJSONStorage`** — Uses `createJSONStorage(() => localStorage)` for proper cross-tab sync
+- **`withStorageDOMEvents` helper** — Custom utility that listens for `storage` events and calls `rehydrate()` on Zustand stores, enabling real-time cross-tab synchronization
 - **Lucide icons** — Replaced unicode hearts with `<Heart>` from lucide-react (fill toggled via prop)
 - **getCoverUrl extracted** — Shared utility in `utils/getCoverUrl.ts` used by BookCard and BookModal
 - **BookCard is fully reusable** — Has `onClick`, `extra` props; heart and reading list dropdown built-in
@@ -96,6 +98,4 @@ type ReadingStatus = "want" | "reading" | "read";
 - ✅ CSS variables used consistently across all components
 
 ## Recommended Next Steps
-- Image optimization (configure `next.config.ts` images.remotePatterns for Open Library)
-- Loading skeletons / better empty states
-- Accessibility improvements (ARIA labels, focus management)
+Ver `ROADMAP.md` para la lista completa de mejoras pendientes.
