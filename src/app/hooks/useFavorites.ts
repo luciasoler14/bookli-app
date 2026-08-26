@@ -1,9 +1,9 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { useShallow } from "zustand/shallow";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { Book } from "../components/BookCard";
+import { withStorageDOMEvents } from "../utils/withStorageDOMEvents";
 
 interface FavoriteEntry {
   book: Book;
@@ -49,17 +49,14 @@ export const useFavorites = create<FavoritesState>()(
     }),
     {
       name: "bookli:favorites",
-      storage: {
-        getItem: (name) => {
-          const str = localStorage.getItem(name);
-          return str ? JSON.parse(str) : null;
-        },
-        setItem: (name, value) => localStorage.setItem(name, JSON.stringify(value)),
-        removeItem: (name) => localStorage.removeItem(name),
-      },
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
+
+if (typeof window !== "undefined") {
+  withStorageDOMEvents(useFavorites);
+}
 
 export const useFavoriteList = () => {
   const favorites = useFavorites((state) => state.favorites);

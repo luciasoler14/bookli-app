@@ -1,8 +1,9 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { Book } from "../components/BookCard";
+import { withStorageDOMEvents } from "../utils/withStorageDOMEvents";
 
 export type ReadingStatus = "want" | "reading" | "read";
 
@@ -53,17 +54,14 @@ export const useReadingList = create<ReadingListState>()(
     }),
     {
       name: "bookli:reading-list",
-      storage: {
-        getItem: (name) => {
-          const str = localStorage.getItem(name);
-          return str ? JSON.parse(str) : null;
-        },
-        setItem: (name, value) => localStorage.setItem(name, JSON.stringify(value)),
-        removeItem: (name) => localStorage.removeItem(name),
-      },
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
+
+if (typeof window !== "undefined") {
+  withStorageDOMEvents(useReadingList);
+}
 
 export const useReadingListArray = () => {
   const readingList = useReadingList((state) => state.readingList);
