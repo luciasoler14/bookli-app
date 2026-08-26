@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import BookCard, { Book } from "./BookCard";
 import { useTrending } from "../hooks/useTrending";
+import { TrendingSkeleton } from "./Skeleton";
 import styles from "./TrendingBooks.module.css";
 
 interface TrendingBooksProps {
@@ -86,7 +87,7 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
     return (
       <section className={styles.section}>
         <h2 className={styles.title}>🔥 Trending / Popular</h2>
-        <div className={styles.loading}>Loading trending books...</div>
+        <TrendingSkeleton />
       </section>
     );
   }

@@ -101,7 +101,11 @@ export default function BookModal({ book, onClose }: BookModalProps) {
               )}
             </div>
             {isLoading ? (
-              <p className={styles.descriptionLoading}>Loading description...</p>
+              <div className={styles.descriptionLoading}>
+                <div className={styles.skeletonLine} />
+                <div className={styles.skeletonLine} />
+                <div className={styles.skeletonLineShort} />
+              </div>
             ) : details?.description ? (
               <p className={styles.description}>{details.description}</p>
             ) : null}

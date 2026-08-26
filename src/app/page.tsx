@@ -10,6 +10,7 @@ import TrendingBooks from "./components/TrendingBooks";
 import { useBooks } from "./hooks/useBooks";
 import { useSubjectBooks } from "./hooks/useSubjectBooks";
 import { useSearchHistory } from "./hooks/useSearchHistory";
+import { SearchResultsSkeleton } from "./components/Skeleton";
 import styles from "./page.module.css";
 
 const BOOKS_PER_PAGE = 20;
@@ -167,8 +168,7 @@ function HomeContent() {
 
         {isLoading && (
           <div className={styles.loading}>
-            <div className={styles.spinner}></div>
-            <p>Searching for books...</p>
+            <SearchResultsSkeleton />
           </div>
         )}
 
