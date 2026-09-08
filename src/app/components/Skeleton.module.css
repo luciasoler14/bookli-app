@@ -42,57 +42,12 @@
   width: 40%;
 }
 
-.modalCover {
-  width: 200px;
-  height: 300px;
-  border-radius: var(--radius-md);
-  flex-shrink: 0;
-}
-
-.modalTitle {
-  height: 24px;
-  width: 70%;
-  margin-bottom: 0.5rem;
-}
-
-.modalAuthor {
-  height: 16px;
-  width: 50%;
-  margin-bottom: 1.25rem;
-}
-
-.modalLine {
-  height: 14px;
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.modalLineShort {
-  height: 14px;
-  width: 65%;
-  margin-bottom: 0.5rem;
-}
-
 .modalTag {
   height: 28px;
   width: 80px;
   border-radius: var(--radius-full);
   display: inline-block;
   margin-right: 0.45rem;
-}
-
-.modalActions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.modalBtn {
-  height: 40px;
-  border-radius: var(--radius-md);
 }
 
 .detailCover {

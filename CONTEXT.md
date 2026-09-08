@@ -79,7 +79,7 @@ interface Book {
 }
 
 // useReadingList.ts
-type ReadingStatus = "want" | "reading" | "read";
+type ReadingStatus = "want" | "reading" | "read" | "dropped";
 ```
 
 ## Key Decisions
