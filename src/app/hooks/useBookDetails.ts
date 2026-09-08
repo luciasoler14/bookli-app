@@ -76,7 +76,7 @@ async function fetchBookDetails(key: string): Promise<BookDetails> {
       title: data.title,
       author_name: authorNames.length > 0 ? authorNames : undefined,
       first_publish_year: edition?.first_publish_year || data.first_publish_year,
-      cover_i: edition?.covers?.[0],
+      cover_i: edition?.covers?.[0] || data.covers?.[0],
       publisher: edition?.publishers,
       language: edition?.languages?.map((l: { key: string }) =>
         l.key.replace("/languages/", "")

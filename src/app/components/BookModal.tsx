@@ -49,6 +49,8 @@ export default function BookModal({ book, onClose }: BookModalProps) {
                 size="L"
                 className={styles.cover}
                 noCoverClassName={styles.noCover}
+                sizes="200px"
+                progressive
               />
             </div>
             </div>

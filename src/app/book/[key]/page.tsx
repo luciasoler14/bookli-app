@@ -63,6 +63,8 @@ export default function BookDetailPage({
                 size="L"
                 className={styles.cover}
                 noCoverClassName={styles.noCover}
+                sizes="280px"
+                progressive
               />
             </div>
           </div>
