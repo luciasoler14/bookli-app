@@ -15,7 +15,7 @@ interface SearchHistoryState {
 
 export const useSearchHistory = create<SearchHistoryState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       history: [],
       addSearch: (query) => {
         const trimmed = query.trim();

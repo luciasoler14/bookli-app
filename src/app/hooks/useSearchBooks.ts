@@ -30,7 +30,7 @@ async function fetchSearchBooks(
   query: string,
   page: number
 ): Promise<{ books: Book[]; numFound: number }> {
-  const limit = 20;
+  const limit = BOOKS_PER_PAGE;
   const offset = (page - 1) * limit;
   const res = await fetch(
     `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${limit}&offset=${offset}`

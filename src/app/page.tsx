@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect, useRef } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import BookCard, { Book } from "./components/BookCard";
 import BookModal from "./components/BookModal";
@@ -23,19 +23,17 @@ function HomeContent() {
   const urlSubject = searchParams.get("subject") || null;
   const urlPage = parseInt(searchParams.get("page") || "1", 10);
 
-  const [query, setQuery] = useState(urlQuery);
+  const urlSyncValue = urlSubject || urlQuery;
+  const [query, setQuery] = useState(urlSyncValue);
+  const [syncedUrlValue, setSyncedUrlValue] = useState(urlSyncValue);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 
-  // Sync query with urlSubject when subject changes in URL
-  useEffect(() => {
-    if (urlSubject) {
-      const timeout = setTimeout(() => setQuery(urlSubject), 0);
-      return () => clearTimeout(timeout);
-    } else {
-      setQuery(urlQuery);
-    }
-  }, [urlQuery, urlSubject]);
+  // Keep the input in sync when urlQuery/urlSubject change (e.g. back/forward navigation)
+  if (urlSyncValue !== syncedUrlValue) {
+    setSyncedUrlValue(urlSyncValue);
+    setQuery(urlSyncValue);
+  }
 
   const isSubjectSearch = !!urlSubject && !urlQuery;
 
