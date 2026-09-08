@@ -112,6 +112,7 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
             fill
             sizes="200px"
             unoptimized
+            loading="eager"
             onLoad={() => setImgLoaded(true)}
           />
           <button

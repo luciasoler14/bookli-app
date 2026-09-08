@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import BookCard, { Book } from "./components/BookCard";
 import BookModal from "./components/BookModal";
@@ -27,13 +27,21 @@ function HomeContent() {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 
+  useEffect(() => {
+    if (urlSubject) {
+      setQuery(urlSubject);
+    } else {
+      setQuery(urlQuery);
+    }
+  }, [urlSubject, urlQuery]);
+
   const isSubjectSearch = !!urlSubject && !urlQuery;
 
-  const { data: searchData, isLoading: searchLoading, error: searchError } = useBooks(
-    urlQuery,
-    urlPage,
-    urlQuery.length > 0 && !isSubjectSearch,
-  );
+  const {
+    data: searchData,
+    isLoading: searchLoading,
+    error: searchError,
+  } = useBooks(urlQuery, urlPage, urlQuery.length > 0 && !isSubjectSearch);
 
   const { data: subjectData, isLoading: subjectLoading } = useSubjectBooks(
     isSubjectSearch ? urlSubject : null,
@@ -43,8 +51,12 @@ function HomeContent() {
   const isLoading = isSubjectSearch ? subjectLoading : searchLoading;
   const error = isSubjectSearch ? null : searchError;
 
-  const books = isSubjectSearch ? (subjectData?.books || []) : (searchData?.docs || []);
-  const numFound = isSubjectSearch ? (subjectData?.numFound || 0) : (searchData?.numFound || 0);
+  const books = isSubjectSearch
+    ? subjectData?.books || []
+    : searchData?.docs || [];
+  const numFound = isSubjectSearch
+    ? subjectData?.numFound || 0
+    : searchData?.numFound || 0;
   const totalPages = Math.min(Math.ceil(numFound / BOOKS_PER_PAGE), 100);
 
   const displayTitle = isSubjectSearch
@@ -187,7 +199,11 @@ function HomeContent() {
             </h2>
             <div className={styles.bookGrid}>
               {books.map((book) => (
-                <BookCard key={book.key} book={book} onClick={setSelectedBook} />
+                <BookCard
+                  key={book.key}
+                  book={book}
+                  onClick={setSelectedBook}
+                />
               ))}
             </div>
             <Pagination
@@ -198,14 +214,17 @@ function HomeContent() {
           </section>
         )}
 
-        {!isLoading && (urlQuery || isSubjectSearch) && !error && books.length === 0 && (
-          <div className={styles.noResults}>
-            <p>
-              No books found for &quot;{displayTitle}&quot;. Try a different
-              search term.
-            </p>
-          </div>
-        )}
+        {!isLoading &&
+          (urlQuery || isSubjectSearch) &&
+          !error &&
+          books.length === 0 && (
+            <div className={styles.noResults}>
+              <p>
+                No books found for &quot;{displayTitle}&quot;. Try a different
+                search term.
+              </p>
+            </div>
+          )}
 
         {showTrending && <TrendingBooks onBookClick={setSelectedBook} />}
       </main>
