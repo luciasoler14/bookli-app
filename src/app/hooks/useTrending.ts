@@ -52,9 +52,12 @@ async function fetchTrending(): Promise<Book[]> {
   const timeout = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const res = await fetch("https://openlibrary.org/trending/weekly.json", {
-      signal: controller.signal,
-    });
+    const res = await fetch(
+      "https://openlibrary.org/trending/weekly.json?limit=6",
+      {
+        signal: controller.signal,
+      },
+    );
     if (!res.ok) throw new Error("Failed to fetch trending books");
     const data: TrendingResponse = await res.json();
     return data.works.map(mapWorkToBook);
