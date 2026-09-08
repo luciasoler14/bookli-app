@@ -7,7 +7,7 @@ import { getCoverUrl } from "../../utils/getCoverUrl";
 import { getLanguageName } from "../../utils/languages";
 import { useBookDetails } from "../../hooks/useBookDetails";
 import { useFavorites } from "../../hooks/useFavorites";
-import { useReadingList, ReadingStatus } from "../../hooks/useReadingList";
+import { useReadingList } from "../../hooks/useReadingList";
 import { STATUS_LABELS } from "../../utils/constants";
 import { BookDetailSkeleton } from "../../components/Skeleton";
 import styles from "./page.module.css";

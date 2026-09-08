@@ -24,7 +24,6 @@ function HomeContent() {
   const urlPage = parseInt(searchParams.get("page") || "1", 10);
 
   const [query, setQuery] = useState(urlQuery);
-  const urlSubjectRef = useRef(urlSubject);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { history, addSearch, removeSearch } = useSearchHistory();
 

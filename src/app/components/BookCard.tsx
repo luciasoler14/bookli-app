@@ -95,65 +95,64 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
-      {book.cover_i ? (
-        <div className={styles.coverWrapper}>
-          <Image
-            src={getCoverUrl(book.cover_i, "S")}
-            alt=""
-            className={`${styles.cover} ${styles.coverPlaceholder}`}
-            fill
-            sizes="200px"
-            unoptimized
-          />
-          <Image
-            src={getCoverUrl(book.cover_i, "M")}
-            alt={book.title}
-            className={`${styles.cover} ${imgLoaded ? styles.coverLoaded : ""}`}
-            fill
-            sizes="200px"
-            unoptimized
-            loading="eager"
-            onLoad={() => setImgLoaded(true)}
-          />
+      <div className={styles.coverWrapper}>
+        {book.cover_i ? (
+          <>
+            <Image
+              src={getCoverUrl(book.cover_i, "S")}
+              alt=""
+              className={`${styles.cover} ${styles.coverPlaceholder}`}
+              fill
+              sizes="200px"
+              unoptimized
+            />
+            <Image
+              src={getCoverUrl(book.cover_i, "M")}
+              alt={book.title}
+              className={`${styles.cover} ${imgLoaded ? styles.coverLoaded : ""}`}
+              fill
+              sizes="200px"
+              unoptimized
+              loading="eager"
+              onLoad={() => setImgLoaded(true)}
+            />
+          </>
+        ) : (
+          <div className={styles.noCover}>No Cover</div>
+        )}
+        <button
+          className={`${styles.heart} ${favorited ? styles.heartActive : ""}`}
+          onClick={handleHeartClick}
+        >
+          <Heart size={22} fill={favorited ? "currentColor" : "none"} />
+        </button>
+        <div className={styles.readingDropdown} ref={dropdownRef}>
           <button
-            className={`${styles.heart} ${favorited ? styles.heartActive : ""}`}
-            onClick={handleHeartClick}
+            className={`${styles.readingBtn} ${inReadingList ? styles.readingBtnActive : ""}`}
+            onClick={handleReadingClick}
           >
-            <Heart size={22} fill={favorited ? "currentColor" : "none"} />
+            {inReadingList ? STATUS_LABELS[getStatus(book.key)!] : "+"}
           </button>
-          <div className={styles.readingDropdown} ref={dropdownRef}>
-            <button
-              className={`${styles.readingBtn} ${inReadingList ? styles.readingBtnActive : ""}`}
-              onClick={handleReadingClick}
-            >
-              {inReadingList ? STATUS_LABELS[getStatus(book.key)!] : "+"}
-            </button>
-            {showDropdown && (
-              <div className={styles.dropdown}>
-                {(["want", "reading", "read", "dropped"] as const).map((s) => (
-                  <button
-                    key={s}
-                    className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
-                    onClick={(e) => handleSelectStatus(e, s)}
-                  >
-                    {STATUS_LABELS[s]}
-                  </button>
-                ))}
-                {inReadingList && (
-                  <button
-                    className={styles.dropdownItem}
-                    onClick={handleRemove}
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+          {showDropdown && (
+            <div className={styles.dropdown}>
+              {(["want", "reading", "read", "dropped"] as const).map((s) => (
+                <button
+                  key={s}
+                  className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
+                  onClick={(e) => handleSelectStatus(e, s)}
+                >
+                  {STATUS_LABELS[s]}
+                </button>
+              ))}
+              {inReadingList && (
+                <button className={styles.dropdownItem} onClick={handleRemove}>
+                  Remove
+                </button>
+              )}
+            </div>
+          )}
         </div>
-      ) : (
-        <div className={styles.noCover}>No Cover</div>
-      )}
+      </div>
       <div className={styles.info}>
         <h3 className={styles.title}>{book.title}</h3>
         <p className={styles.author}>
