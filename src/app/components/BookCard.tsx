@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { getCoverUrl } from "../utils/getCoverUrl";
 import BookActions from "./BookActions";
+import BookCover from "./BookCover";
 import styles from "./BookCard.module.css";
 
 export interface Book {
@@ -23,12 +21,18 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, onClick, extra }: BookCardProps) {
-  const [imgLoaded, setImgLoaded] = useState(false);
-
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 1) {
       e.preventDefault();
       window.open(`/book/${encodeURIComponent(book.key)}`, "_blank");
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!onClick) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick(book);
     }
   };
 
@@ -37,34 +41,18 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
       className={styles.card}
       onClick={() => onClick?.(book)}
       onMouseDown={handleMouseDown}
+      onKeyDown={handleKeyDown}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
       <div className={styles.coverWrapper}>
-        {book.cover_i ? (
-          <>
-            <Image
-              src={getCoverUrl(book.cover_i, "S")}
-              alt=""
-              className={`${styles.cover} ${styles.coverPlaceholder}`}
-              fill
-              sizes="200px"
-              unoptimized
-            />
-            <Image
-              src={getCoverUrl(book.cover_i, "M")}
-              alt={book.title}
-              className={`${styles.cover} ${imgLoaded ? styles.coverLoaded : ""}`}
-              fill
-              sizes="200px"
-              unoptimized
-              loading="eager"
-              onLoad={() => setImgLoaded(true)}
-            />
-          </>
-        ) : (
-          <div className={styles.noCover}>No Cover</div>
-        )}
+        <BookCover
+          book={book}
+          size="M"
+          sizes="200px"
+          progressive
+          noCoverClassName={styles.noCover}
+        />
         <BookActions book={book} variant="overlay" />
       </div>
       <div className={styles.info}>

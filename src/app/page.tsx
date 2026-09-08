@@ -138,6 +138,7 @@ function HomeContent() {
                 type="button"
                 className={styles.clearButton}
                 onClick={handleClear}
+                aria-label="Clear search"
               >
                 ✕
               </button>
@@ -168,6 +169,7 @@ function HomeContent() {
                     e.stopPropagation();
                     removeSearch(term);
                   }}
+                  aria-label={`Remove "${term}" from history`}
                 >
                   ✕
                 </button>

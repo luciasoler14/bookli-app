@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Book } from "./BookCard";
-import { getCoverUrl } from "../utils/getCoverUrl";
 import { getLanguageName } from "../utils/languages";
 import { useBookDetails } from "../hooks/useBookDetails";
 import BookActions from "./BookActions";
 import actionStyles from "./BookActions.module.css";
+import BookCover from "./BookCover";
 import styles from "./BookModal.module.css";
 
 interface BookModalProps {
@@ -34,25 +33,24 @@ export default function BookModal({ book, onClose }: BookModalProps) {
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
+         <button
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="Close"
+        >
           ✕
         </button>
         <div className={styles.scrollArea}>
           <div className={styles.content}>
             <div className={styles.coverSection}>
-              {book.cover_i ? (
-                <div className={styles.coverWrapper}>
-                  <Image
-                    src={getCoverUrl(book.cover_i, "L")}
-                    alt={book.title}
-                    className={styles.cover}
-                    fill
-                    unoptimized
-                  />
-                </div>
-              ) : (
-                <div className={styles.noCover}>No Cover</div>
-              )}
+               <div className={styles.coverWrapper}>
+              <BookCover
+                book={book}
+                size="L"
+                className={styles.cover}
+                noCoverClassName={styles.noCover}
+              />
+            </div>
             </div>
             <div className={styles.details}>
               <h2 className={styles.title}>{book.title}</h2>

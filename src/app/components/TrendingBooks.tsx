@@ -16,7 +16,12 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
   const [canScrollRight, setCanScrollRight] = useState(false);
   const { data: books, isLoading, error } = useTrending(6);
 
-  const touchState = useRef({ startX: 0, startY: 0, isDragging: false, scrollLeft: 0 });
+  const touchState = useRef({
+    startX: 0,
+    startY: 0,
+    isDragging: false,
+    scrollLeft: 0,
+  });
 
   const updateArrows = useCallback(() => {
     const el = elRef.current;
@@ -68,7 +73,9 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
       if (node) {
         updateArrows();
         node.addEventListener("scroll", updateArrows, { passive: true });
-        node.addEventListener("touchstart", handleTouchStart, { passive: true });
+        node.addEventListener("touchstart", handleTouchStart, {
+          passive: true,
+        });
         node.addEventListener("touchmove", handleTouchMove, { passive: false });
         node.addEventListener("touchend", handleTouchEnd, { passive: true });
       }
@@ -101,7 +108,11 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
       <h2 className={styles.title}>🔥 Trending This Week</h2>
       <div className={styles.scrollWrapper}>
         {canScrollLeft && (
-          <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={() => scroll("left")}>
+          <button
+            className={`${styles.arrow} ${styles.arrowLeft}`}
+            onClick={() => scroll("left")}
+            aria-label="Scroll left"
+          >
             &#8249;
           </button>
         )}
@@ -113,7 +124,11 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
           ))}
         </div>
         {canScrollRight && (
-          <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={() => scroll("right")}>
+          <button
+            className={`${styles.arrow} ${styles.arrowRight}`}
+            onClick={() => scroll("right")}
+            aria-label="Scroll right"
+          >
             &#8250;
           </button>
         )}

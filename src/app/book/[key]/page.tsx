@@ -1,12 +1,11 @@
 "use client";
 
 import { use } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { getCoverUrl } from "../../utils/getCoverUrl";
 import { getLanguageName } from "../../utils/languages";
 import { useBookDetails } from "../../hooks/useBookDetails";
 import BookActions from "../../components/BookActions";
+import BookCover from "../../components/BookCover";
 import { BookDetailSkeleton } from "../../components/Skeleton";
 import styles from "./page.module.css";
 
@@ -58,19 +57,14 @@ export default function BookDetailPage({
 
         <div className={styles.content}>
           <div className={styles.coverSection}>
-            {book.cover_i ? (
-              <div className={styles.coverWrapper}>
-                <Image
-                  src={getCoverUrl(book.cover_i, "L")}
-                  alt={book.title}
-                  className={styles.cover}
-                  fill
-                  unoptimized
-                />
-              </div>
-            ) : (
-              <div className={styles.noCover}>No Cover</div>
-            )}
+            <div className={styles.coverWrapper}>
+              <BookCover
+                book={book}
+                size="L"
+                className={styles.cover}
+                noCoverClassName={styles.noCover}
+              />
+            </div>
           </div>
 
           <div className={styles.details}>

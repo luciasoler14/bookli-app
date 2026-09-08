@@ -1,0 +1,16 @@
+.image {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.placeholder {
+  image-rendering: pixelated;
+  filter: blur(6px);
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.loaded {
+  opacity: 1;
+}
