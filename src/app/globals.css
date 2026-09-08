@@ -20,12 +20,25 @@
   --disabled: #d1d5db;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
-  --gradient-primary-soft: linear-gradient(135deg, rgba(230, 57, 70, 0.08) 0%, rgba(193, 18, 31, 0.04) 100%);
-  --gradient-hero: linear-gradient(135deg, #e63946 0%, #d13653 40%, #ff6b7a 100%);
-  --gradient-header: linear-gradient(135deg, #d13653 0%, #a8203a 100%);
+  --gradient-primary: linear-gradient(135deg, #d62839 0%, #b91e2e 100%);
+  --gradient-primary-soft: linear-gradient(
+    135deg,
+    rgba(214, 40, 57, 0.08) 0%,
+    rgba(185, 30, 46, 0.04) 100%
+  );
+  --gradient-hero: linear-gradient(
+    135deg,
+    #d62839 0%,
+    #c43b4d 40%,
+    #ef6b78 100%
+  );
+  --gradient-header: linear-gradient(135deg, #8f1d2c 0%, #741624 100%);
   --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-  --gradient-card-hover: linear-gradient(135deg, rgba(230, 57, 70, 0.03) 0%, rgba(255, 107, 122, 0.06) 100%);
+  --gradient-card-hover: linear-gradient(
+    135deg,
+    rgba(214, 40, 57, 0.03) 0%,
+    rgba(239, 107, 120, 0.06) 100%
+  );
 
   /* Shadows — layered for depth */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -35,7 +48,8 @@
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 8px 10px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.12);
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-card-hover: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover:
+    0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
   --shadow-primary: 0 4px 14px rgba(230, 57, 70, 0.25);
   --shadow-primary-lg: 0 8px 24px rgba(230, 57, 70, 0.3);
 
@@ -76,9 +90,18 @@ body {
   min-height: 100vh;
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
+  font-family:
+    var(--font-geist-sans),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
