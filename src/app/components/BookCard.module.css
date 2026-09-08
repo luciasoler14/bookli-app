@@ -25,6 +25,18 @@
 
 .cover {
   object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.coverPlaceholder {
+  image-rendering: pixelated;
+  filter: blur(6px);
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.coverLoaded {
+  opacity: 1;
 }
 
 .noCover {

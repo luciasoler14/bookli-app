@@ -34,6 +34,7 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
     updateStatus,
     isInReadingList,
   } = useReadingList();
+  const [imgLoaded, setImgLoaded] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const favorited = isFavorite(book.key);
@@ -97,12 +98,21 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
       {book.cover_i ? (
         <div className={styles.coverWrapper}>
           <Image
+            src={getCoverUrl(book.cover_i, "S")}
+            alt=""
+            className={`${styles.cover} ${styles.coverPlaceholder}`}
+            fill
+            sizes="200px"
+            unoptimized
+          />
+          <Image
             src={getCoverUrl(book.cover_i, "M")}
             alt={book.title}
-            className={styles.cover}
+            className={`${styles.cover} ${imgLoaded ? styles.coverLoaded : ""}`}
             fill
+            sizes="200px"
             unoptimized
-            loading="eager"
+            onLoad={() => setImgLoaded(true)}
           />
           <button
             className={`${styles.heart} ${favorited ? styles.heartActive : ""}`}
