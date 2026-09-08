@@ -1,14 +1,12 @@
 "use client";
 
-import { use, useRef, useState, useEffect } from "react";
+import { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getCoverUrl } from "../../utils/getCoverUrl";
 import { getLanguageName } from "../../utils/languages";
 import { useBookDetails } from "../../hooks/useBookDetails";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useReadingList } from "../../hooks/useReadingList";
-import { STATUS_LABELS } from "../../utils/constants";
+import BookActions from "../../components/BookActions";
 import { BookDetailSkeleton } from "../../components/Skeleton";
 import styles from "./page.module.css";
 
@@ -21,35 +19,8 @@ export default function BookDetailPage({
   const decodedKey = decodeURIComponent(key);
 
   const { data: details, isLoading } = useBookDetails(decodedKey);
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const {
-    getStatus,
-    addToReadingList,
-    removeFromReadingList,
-    updateStatus,
-    isInReadingList,
-  } = useReadingList();
-
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!showDropdown) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showDropdown]);
 
   const book = details?.book;
-  const isFav = book ? isFavorite(book.key) : false;
-  const inList = book ? isInReadingList(book.key) : false;
 
   if (isLoading) {
     return (
@@ -182,57 +153,7 @@ export default function BookDetailPage({
             )}
 
             <div className={styles.actions}>
-              <button
-                className={`${styles.actionBtn} ${isFav ? styles.actionBtnActive : ""}`}
-                onClick={() => book && toggleFavorite(book)}
-              >
-                <span>{isFav ? "♥" : "♡"}</span>
-                <span>{isFav ? "Favorited" : "Favorite"}</span>
-              </button>
-
-              <div className={styles.dropdownWrapper} ref={dropdownRef}>
-                <button
-                  className={`${styles.actionBtn} ${inList ? styles.actionBtnReading : ""}`}
-                  onClick={() => setShowDropdown(!showDropdown)}
-                >
-                  {inList
-                    ? STATUS_LABELS[getStatus(book.key)!]
-                    : "Reading List"}
-                </button>
-                {showDropdown && (
-                  <div className={styles.dropdown}>
-                    {(["want", "reading", "read", "dropped"] as const).map(
-                      (s) => (
-                        <button
-                          key={s}
-                          className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
-                          onClick={() => {
-                            if (inList) {
-                              updateStatus(book.key, s);
-                            } else {
-                              addToReadingList(book, s);
-                            }
-                            setShowDropdown(false);
-                          }}
-                        >
-                          {STATUS_LABELS[s]}
-                        </button>
-                      ),
-                    )}
-                    {inList && (
-                      <button
-                        className={styles.dropdownItem}
-                        onClick={() => {
-                          removeFromReadingList(book.key);
-                          setShowDropdown(false);
-                        }}
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+              <BookActions book={book} variant="inline" size="md" />
             </div>
           </div>
         </div>

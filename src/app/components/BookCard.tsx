@@ -1,12 +1,9 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { Heart } from "lucide-react";
 import { getCoverUrl } from "../utils/getCoverUrl";
-import { useFavorites } from "../hooks/useFavorites";
-import { useReadingList, ReadingStatus } from "../hooks/useReadingList";
-import { STATUS_LABELS } from "../utils/constants";
+import BookActions from "./BookActions";
 import styles from "./BookCard.module.css";
 
 export interface Book {
@@ -26,59 +23,7 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, onClick, extra }: BookCardProps) {
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const {
-    getStatus,
-    addToReadingList,
-    removeFromReadingList,
-    updateStatus,
-    isInReadingList,
-  } = useReadingList();
   const [imgLoaded, setImgLoaded] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const favorited = isFavorite(book.key);
-  const inReadingList = isInReadingList(book.key);
-
-  useEffect(() => {
-    if (!showDropdown) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showDropdown]);
-
-  const handleHeartClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toggleFavorite(book);
-  };
-
-  const handleReadingClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowDropdown(!showDropdown);
-  };
-
-  const handleSelectStatus = (e: React.MouseEvent, status: ReadingStatus) => {
-    e.stopPropagation();
-    if (inReadingList) {
-      updateStatus(book.key, status);
-    } else {
-      addToReadingList(book, status);
-    }
-    setShowDropdown(false);
-  };
-
-  const handleRemove = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    removeFromReadingList(book.key);
-    setShowDropdown(false);
-  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 1) {
@@ -120,38 +65,7 @@ export default function BookCard({ book, onClick, extra }: BookCardProps) {
         ) : (
           <div className={styles.noCover}>No Cover</div>
         )}
-        <button
-          className={`${styles.heart} ${favorited ? styles.heartActive : ""}`}
-          onClick={handleHeartClick}
-        >
-          <Heart size={22} fill={favorited ? "currentColor" : "none"} />
-        </button>
-        <div className={styles.readingDropdown} ref={dropdownRef}>
-          <button
-            className={`${styles.readingBtn} ${inReadingList ? styles.readingBtnActive : ""}`}
-            onClick={handleReadingClick}
-          >
-            {inReadingList ? STATUS_LABELS[getStatus(book.key)!] : "+"}
-          </button>
-          {showDropdown && (
-            <div className={styles.dropdown}>
-              {(["want", "reading", "read", "dropped"] as const).map((s) => (
-                <button
-                  key={s}
-                  className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
-                  onClick={(e) => handleSelectStatus(e, s)}
-                >
-                  {STATUS_LABELS[s]}
-                </button>
-              ))}
-              {inReadingList && (
-                <button className={styles.dropdownItem} onClick={handleRemove}>
-                  Remove
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+        <BookActions book={book} variant="overlay" />
       </div>
       <div className={styles.info}>
         <h3 className={styles.title}>{book.title}</h3>
