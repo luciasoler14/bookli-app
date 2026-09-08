@@ -36,7 +36,10 @@ export default function BookDetailPage({
   useEffect(() => {
     if (!showDropdown) return;
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setShowDropdown(false);
       }
     };
@@ -148,7 +151,8 @@ export default function BookDetailPage({
                       <h4 className={styles.authorName}>{author.name}</h4>
                       {(author.birth_date || author.death_date) && (
                         <p className={styles.authorDates}>
-                          {author.birth_date || "?"} — {author.death_date || "?"}
+                          {author.birth_date || "?"} —{" "}
+                          {author.death_date || "?"}
                         </p>
                       )}
                       {author.bio && (
@@ -165,9 +169,13 @@ export default function BookDetailPage({
                 <h3 className={styles.sectionTitle}>Subjects</h3>
                 <div className={styles.subjects}>
                   {details.subjects.slice(0, 12).map((subject) => (
-                    <span key={subject} className={styles.subjectTag}>
+                    <Link
+                      key={subject}
+                      href={`/?subject=${encodeURIComponent(subject)}`}
+                      className={styles.subjectTag}
+                    >
                       {subject}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -187,26 +195,30 @@ export default function BookDetailPage({
                   className={`${styles.actionBtn} ${inList ? styles.actionBtnReading : ""}`}
                   onClick={() => setShowDropdown(!showDropdown)}
                 >
-                  {inList ? STATUS_LABELS[getStatus(book.key)!] : "Reading List"}
+                  {inList
+                    ? STATUS_LABELS[getStatus(book.key)!]
+                    : "Reading List"}
                 </button>
                 {showDropdown && (
                   <div className={styles.dropdown}>
-                    {(["want", "reading", "read", "dropped"] as const).map((s) => (
-                      <button
-                        key={s}
-                        className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
-                        onClick={() => {
-                          if (inList) {
-                            updateStatus(book.key, s);
-                          } else {
-                            addToReadingList(book, s);
-                          }
-                          setShowDropdown(false);
-                        }}
-                      >
-                        {STATUS_LABELS[s]}
-                      </button>
-                    ))}
+                    {(["want", "reading", "read", "dropped"] as const).map(
+                      (s) => (
+                        <button
+                          key={s}
+                          className={`${styles.dropdownItem} ${getStatus(book.key) === s ? styles.dropdownItemActive : ""}`}
+                          onClick={() => {
+                            if (inList) {
+                              updateStatus(book.key, s);
+                            } else {
+                              addToReadingList(book, s);
+                            }
+                            setShowDropdown(false);
+                          }}
+                        >
+                          {STATUS_LABELS[s]}
+                        </button>
+                      ),
+                    )}
                     {inList && (
                       <button
                         className={styles.dropdownItem}
