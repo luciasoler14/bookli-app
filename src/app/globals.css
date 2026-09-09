@@ -186,6 +186,13 @@ a {
   text-decoration: none;
 }
 
+input,
+textarea,
+select {
+  font: inherit;
+  color: var(--foreground);
+}
+
 ::selection {
   background: rgba(230, 57, 70, 0.15);
   color: var(--foreground);

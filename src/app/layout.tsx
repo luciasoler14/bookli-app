@@ -18,7 +18,11 @@ const themeScript = `(function(){try{var s=localStorage.getItem("bookli:theme");
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={geistSans.variable}>
+    <html
+      lang="en"
+      className={geistSans.variable}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

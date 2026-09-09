@@ -42,9 +42,11 @@ export default function Header() {
             className={styles.themeToggle}
             onClick={toggleTheme}
             aria-label={
-              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+              mounted && theme === "dark"
+                ? "Switch to light mode"
+                : "Switch to dark mode"
             }
-            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            title={mounted && theme === "dark" ? "Light mode" : "Dark mode"}
           >
             {mounted && theme === "dark" ? (
               <Sun size={18} />
