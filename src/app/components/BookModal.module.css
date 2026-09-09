@@ -16,7 +16,7 @@
 }
 
 .modal {
-  background: white;
+  background: var(--card);
   border-radius: var(--radius-xl);
   max-width: 850px;
   width: 100%;
@@ -27,7 +27,7 @@
   flex-direction: column;
   animation: slideUp 0.2s var(--ease-spring);
   box-shadow: var(--shadow-2xl);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .scrollArea {
@@ -75,7 +75,7 @@
 }
 
 .closeButton:hover {
-  background: white;
+  background: var(--card);
   color: var(--text);
   box-shadow: var(--shadow-md);
   border-color: var(--border);
@@ -206,7 +206,7 @@
 }
 
 .subjectTag {
-  background: white;
+  background: var(--card);
   color: var(--text-light);
   font-size: 0.78rem;
   padding: 0.3rem 0.8rem;

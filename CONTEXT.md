@@ -46,7 +46,8 @@ src/app/
 │   ├── useSubjectBooks.ts  — Books by subject with pagination (React Query)
 │   ├── useFavorites.ts     — Zustand store (persisted to localStorage)
 │   ├── useReadingList.ts   — Zustand store (persisted to localStorage)
-│   └── useSearchHistory.ts — Zustand store (persisted to localStorage, max 5)
+│   ├── useSearchHistory.ts — Zustand store (persisted to localStorage, max 5)
+│   └── useTheme.ts         — Light/dark theme, Zustand (persisted "bookli:theme"), sets data-theme on <html>
 │
 ├── utils/
 │   ├── getCoverUrl.ts          — Open Library cover URL builder

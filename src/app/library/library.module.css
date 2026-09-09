@@ -59,7 +59,7 @@
   font-size: 0.8rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-full);
-  background: white;
+  background: var(--card);
   color: var(--text-light);
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-smooth);

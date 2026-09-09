@@ -11,11 +11,11 @@
 }
 
 .bookCard {
-  background: white;
+  background: var(--card);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .bookCover {

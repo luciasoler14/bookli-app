@@ -41,7 +41,7 @@
   height: 42px;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--border);
-  background: white;
+  background: var(--card);
   box-shadow: var(--shadow-md);
   font-size: 1.3rem;
   cursor: pointer;

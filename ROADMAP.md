@@ -24,7 +24,7 @@ Mejoras pendientes, ordenadas por prioridad.
 
 ## Baja prioridad (nice-to-have)
 
-- [ ] **Dark mode** — Toggle de tema claro/oscuro.
+- [x] **Dark mode** — Toggle claro/oscuro en el header (icono sol/luna). Zustand persistido (`bookli:theme`), script inline anti-FOUC, tokens `[data-theme="dark"]` en `globals.css`. Default según `prefers-color-scheme`.
 - [ ] **Notas/ratings personales** — Estrellas y notas en la library.
 - [ ] **Exportar favoritos** — CSV o JSON.
 - [ ] **"Libros similares"** en el modal.
