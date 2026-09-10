@@ -15,7 +15,7 @@ export default function Header() {
   const mounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
 
   return (

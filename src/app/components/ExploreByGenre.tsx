@@ -1,5 +1,6 @@
 "use client";
 
+import { Compass } from "lucide-react";
 import { GENRES } from "../utils/genres";
 import styles from "./ExploreByGenre.module.css";
 
@@ -10,7 +11,10 @@ interface ExploreByGenreProps {
 export default function ExploreByGenre({ onSelect }: ExploreByGenreProps) {
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>🧭 Explore by genre</h2>
+      <h2 className={styles.title}>
+        <Compass size={22} aria-hidden />
+        Explore by genre
+      </h2>
       <div className={styles.grid}>
         {GENRES.map((genre) => (
           <button

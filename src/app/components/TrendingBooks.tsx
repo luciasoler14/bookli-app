@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import { Flame } from "lucide-react";
 import BookCard, { Book } from "./BookCard";
 import { useTrending } from "../hooks/useTrending";
 import { TrendingSkeleton } from "./Skeleton";
@@ -93,7 +94,10 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
   if (isLoading) {
     return (
       <section className={styles.section}>
-        <h2 className={styles.title}>🔥 Trending This Week</h2>
+        <h2 className={styles.title}>
+          <Flame size={22} aria-hidden />
+          Trending This Week
+        </h2>
         <TrendingSkeleton />
       </section>
     );
@@ -105,7 +109,10 @@ export default function TrendingBooks({ onBookClick }: TrendingBooksProps) {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>🔥 Trending This Week</h2>
+      <h2 className={styles.title}>
+        <Flame size={22} aria-hidden />
+        Trending This Week
+      </h2>
       <div className={styles.scrollWrapper}>
         {canScrollLeft && (
           <button
